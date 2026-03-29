@@ -18,9 +18,7 @@
   ],
   "baseURL": "https://anna-docs.netlify.app",
   "siteTitle": "anna-docs",
-  "siteScripts": [
-    "graph.js"
-  ],
+  "siteScripts": [],
   "author": "anna",
   "themeURL": null,
   "copyright": "This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International.",

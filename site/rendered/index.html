@@ -34,9 +34,14 @@
     <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
 
     
-      
-    <script src="/static/scripts/graph.js" defer></script>
     
+    <script>
+        const eventSource = new EventSource("http://localhost:8000/events");
+        eventSource.onmessage = function (event) {
+            location.reload();
+        };
+    </script>
+      
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Pranav" />
@@ -106,7 +111,6 @@
             </section>
         </article>
 
-        
     </main>
 
     
