@@ -1,12 +1,3 @@
 {
-  "builds": [
-    {
-      "src": "main.go",
-      "use": "@vercel/static-build",
-      "config": {
-        "buildCommand": "go run main.go"
-      }
-    }
-  ],
   "outputDirectory": "site/rendered"
 }
