@@ -11,7 +11,6 @@ dist/
 .idea/
 
 #Test directories
-**/rendered/
 test/**/static/
 test/**/got_sitemap.xml
 tmp/

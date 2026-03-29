@@ -1,0 +1,205 @@
+
+
+
+
+ 
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RISC-V: The Linux of Hardware</title>
+
+    
+    <link rel="stylesheet" href="/static/styles/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    
+    <link rel="icon" href="/static/images/anna.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/anna.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/anna.png" />
+    <link rel="apple-touch-icon" href="/static/images/anna.png" />
+    <meta name="theme-color" content="#171c28" />
+
+    
+    <link id="hljs-dark" rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css" />
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
+
+    <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
+
+    
+      
+    <script src="/static/scripts/graph.js" defer></script>
+    
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="RISC-V: The Linux of Hardware" />
+    <meta property="og:description" content="At Homebrew, we talk a lot about Linux and FOSS software. But what if I told you there’s a Linux moment happening in hardware too?" />
+    <meta property="og:image" content="" />
+
+    <meta name="description" content="At Homebrew, we talk a lot about Linux and FOSS software. But what if I told you there’s a Linux moment happening in hardware too?" />
+
+    <script defer>
+        if (typeof hljs !== 'undefined') {
+            hljs.highlightAll();
+            if (typeof CopyButtonPlugin !== 'undefined') {
+                hljs.addPlugin(new CopyButtonPlugin());
+            }
+        }
+    </script>
+</head>
+
+
+<body class="site-body">
+
+    
+
+ 
+
+<header>
+    <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/blogs">Blogs</a>
+        <a href="/gallery/">Gallery</a>
+    </nav>
+</header>
+
+
+    <main class="container site-main" role="main">
+        <article class="content">
+            <section class="body">
+
+                
+                <div class="post-description">
+                    <h1>RISC-V: The Linux of Hardware</h1>
+                                        
+                    <div class="page-date">
+                        
+                        Published on 2025-09-07
+                        
+                    </div>
+                    <div class="authors-placeholder">
+                        
+                    </div>
+                    <div class="blog-tags">
+                        
+                        
+                        <a class="blog-tag" href="/tags/open-source.html">open-source</a>
+                        
+                        <a class="blog-tag" href="/tags/riscv.html">riscv</a>
+                        
+                        <a class="blog-tag" href="/tags/linux.html">linux</a>
+                        
+                        
+                    </div>
+                </div>
+                
+
+                <h2 id="the-hidden-half-of-computing">The Hidden Half of Computing</h2>
+<p>Most of us discover <a href="https://homebrew.hsp-ec.xyz/posts/the-world-of-open-source!/">FOSS</a> through software: cool Linux distros, editors, frameworks and many other tools that make our life easier. But beneath all that is a world not many of us think about: the microchips that run our code. All this while, this world was locked away behind billion-dollar corporations and closed <a href="https://en.wikipedia.org/wiki/Instruction_set_architecture">Instruction Set Architectures</a>.</p>
+<p>Say hello to <a href="https://en.wikipedia.org/wiki/RISC-V">RISC-V (Reduced Instruction Set Computer)</a> — an open source Instruction Set Architecture(ISA) that’s doing to hardware what Linux did to operating systems. This blog is a quick introduction to what RISC-V is, why it matters, and how it fits perfectly into the FOSS spirit.</p>
+<hr>
+<h2 id="so-whats-an-isa-anyway">So What’s an ISA anyway?</h2>
+<p>We all speak different languages with our own unique grammar. Similarly, a processor has its own “grammar” called an <strong>Instruction Set Architecture (ISA)</strong> — the rules that define how software talks to hardware.</p>
+<p>When you think “processor,” names like Intel’s x86 or AMD’s Ryzen probably come to mind. Maybe you’ve even heard of ARM chips in mobile phones and Raspberry Pi. But here’s the catch: all of these are <strong>proprietary</strong>. That means if you want to design a chip with them, you’ll need to pay hefty license fees, sign NDAs, and basically fight uphill just to get started.</p>
+<p>Back in 2010, researchers at <a href="https://www.sifive.com/blog/from-berkeley-lab-to-global-standard-risc-vs-15-ye">UC Berkeley</a> decided to change that. Their project: RISC-V — an open source, free and modular ISA. This means anyone can use it, extend it and guess what even add their own instructions! The entire script was flipped, making hardware innovation as open as software innovation.</p>
+<figure>
+<img src="https://www.eetasia.com/wp-content/uploads/sites/2/2021/12/RISC-V-logo-1.jpg?w=600&amp;h=442&amp;crop=1" alt="SiFive Unveils 64-Bit RISC-V Server Core - EE Times Asia">
+</figure>
+<hr>
+<h2 id="why-should-students-care-about-risc-v">Why should students care about RISC-V?</h2>
+<h3 id="1-foss-energy--the-same-spirit-as-linux"><strong>1. FOSS energy → The same spirit as Linux</strong></h3>
+<p>The openness of RISC-V has created ecosystems much like Linux did — thriving communities, student-led projects, multiple open-source processor cores, Discord servers buzzing with discussions, and more. It’s not just an ISA; it’s a culture you can join and shape.</p>
+<h3 id="2-a-real-learning-playground--no-glass-walls"><strong>2. A real learning playground → No glass walls</strong></h3>
+<p>Hardware design often feels like wizardry happening in corporate or research labs. But RISC-V opens the doors for everyone. Curious about how a processor works internally? You can:</p>
+<ul>
+<li>
+<p>Browse and study real RISC-V cores on GitHub: from tiny educational cores to ones capable of running Linux.</p>
+</li>
+<li>
+<p>Simulate a RISC-V CPU using open-source tools like <a href="https://en.wikipedia.org/wiki/QEMU">QEMU</a>.</p>
+</li>
+</ul>
+<figure>
+<img src="https://raw.githubusercontent.com/mortbopet/Ripes/refs/heads/master/resources/images/animation.gif" alt="Ripes Simulation">
+</figure>
+<blockquote>
+<p><strong>Peek inside a RISC-V CPU: one instruction at a time, courtesy of</strong> <a href="https://github.com/mortbopet/Ripes"><strong>Ripes</strong></a><strong>.</strong> You’re not stuck just reading theory; you can <strong>play with the real thing</strong>.</p>
+</blockquote>
+<h3 id="3-structured-guidance--mentorship-and-learning-programs"><strong>3. Structured guidance → Mentorship and learning programs</strong></h3>
+<p>RISC-V isn’t just open; it’s supportive. The <a href="https://riscv.org/">RISC-V Foundation</a> hosts mentorship programs, student contests, workshops, and provides online resources. Beginners can pair up with experienced developers, contribute to real cores, and learn in a guided environment which makes the learning curve far less intimidating.</p>
+<h3 id="4-industry-shift--where-the-world-is-heading"><strong>4. Industry shift → Where the world is heading</strong></h3>
+<p>This isn’t just about tinkering. RISC-V is becoming a global standard. Tech giants like Intel, NVIDIA, Google, and Qualcomm are adopting it. That means demand for engineers who understand RISC-V is going to rise. As students, learning it now is like learning Linux in the early 2000s: the skills are future-proof.</p>
+<hr>
+<h2 id="why-risc-v-resonates-with-me">Why RISC-V Resonates with me?</h2>
+<p>My first introduction to RISC-V was at <a href="https://hsp-ec.xyz/announcements/tilde-4.0">Tilde</a>, HSP’s flagship summer mentorship program where we were tasked with building a RISC processor in <a href="https://en.wikipedia.org/wiki/Verilog">Verilog</a>. Although I wasn’t able to continue with the project, I was given access to vast resources that opened the door to the world of RISC. I started out with simple <a href="https://training.linuxfoundation.org/training/introduction-to-riscv-lfd110/">Linux Foundation courses</a> and quickly found myself immersed in the subject, having already delved deep into Digital VLSI.</p>
+<p>Soon, I was diving into books and research papers to understand the architecture and design principles of RISC-V. At the same time, I was building <a href="https://github.com/pranav0x0112/RISCape"><strong>RISCape</strong></a>, a 5-stage pipelined RISC-V processor. Reading the theory while implementing it side by side made the concepts click in a way no textbook alone could achieve.</p>
+<p>This hands-on approach showed me the real power of open architectures: students can explore, experiment, and actually <strong>make things work</strong>, all without asking for permission. If it got me hooked, it can probably do the same for you: grab a core, start experimenting, and see where it takes you.</p>
+<figure>
+<img src="https://i0.wp.com/makerstuffs.com/wp-content/uploads/2015/03/procc.png?resize=1024%2C720&amp;ssl=1" alt="RTL Design &amp; Implementation of a RISC- Single Cycle Processor -Part I –  Maker Stuffs">
+</figure>
+<hr>
+<h2 id="closing-thoughts">Closing Thoughts</h2>
+<p>RISC-V is more than just a processor architecture: it’s an open, collaborative ecosystem that mirrors the FOSS philosophy we see in software. From student-friendly cores to real-world applications, it’s shaping the way hardware can be explored, understood, and innovated upon.</p>
+<p>In the next post, we’ll dive into the tools and resources that make experimenting with hardware easier. From simulators to development frameworks and see how you can start building your own projects from scratch.</p>
+
+            </section>
+        </article>
+
+        
+        <section class="graph-bottom" aria-label="Graph view">
+            <h3 class="graph-bottom-title">Graph View</h3>
+            <div id="mini-graph" class="graph-container mini"></div>
+        </section>
+        
+    </main>
+
+    
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <div class="copyright">Rendered using <a href="https://github.com/anna-ssg/anna">anna</a> 💙</div>
+    </div>
+    <script> (function () { var el = document.getElementById('site-year'); if (el) el.textContent = new Date().getFullYear(); })();
+
+         
+        (function () {
+            var ham = document.getElementById('hamburger'); if (!ham) return;
+
+            function setNavStateOnLoadOrResize() {
+                
+                if (window.innerWidth > 700) {
+                    document.body.classList.remove('nav-open');
+                    ham.setAttribute('aria-expanded', 'false');
+                } else {
+                    
+                    document.body.classList.remove('nav-open');
+                    ham.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            function toggleNav() {
+                var isOpen = document.body.classList.toggle('nav-open');
+                ham.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            }
+
+            
+            setNavStateOnLoadOrResize();
+
+            ham.addEventListener('click', toggleNav);
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { document.body.classList.remove('nav-open'); ham.setAttribute('aria-expanded', 'false'); } });
+            window.addEventListener('resize', setNavStateOnLoadOrResize);
+            
+            document.addEventListener('click', function (e) { if (!document.body.classList.contains('nav-open')) return; if (!e.target.closest || !e.target.closest('.site-header')) { document.body.classList.remove('nav-open'); ham.setAttribute('aria-expanded', 'false'); } });
+        })();</script>
+</footer>
+
+</body>
+
+</html>
+

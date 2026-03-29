@@ -1,0 +1,278 @@
+
+
+
+
+ 
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aetheron: Bringing My Own SoC to Life</title>
+
+    
+    <link rel="stylesheet" href="/static/styles/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    
+    <link rel="icon" href="/static/images/anna.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/anna.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/anna.png" />
+    <link rel="apple-touch-icon" href="/static/images/anna.png" />
+    <meta name="theme-color" content="#171c28" />
+
+    
+    <link id="hljs-dark" rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css" />
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
+
+    <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
+
+    
+      
+    <script src="/static/scripts/graph.js" defer></script>
+    
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Aetheron: Bringing My Own SoC to Life" />
+    <meta property="og:description" content="From wires to life: how I built and booted my own System-On-Chip using BlueSpec SystemVerilog" />
+    <meta property="og:image" content="" />
+
+    <meta name="description" content="From wires to life: how I built and booted my own System-On-Chip using BlueSpec SystemVerilog" />
+
+    <script defer>
+        if (typeof hljs !== 'undefined') {
+            hljs.highlightAll();
+            if (typeof CopyButtonPlugin !== 'undefined') {
+                hljs.addPlugin(new CopyButtonPlugin());
+            }
+        }
+    </script>
+</head>
+
+
+<body class="site-body">
+
+    
+
+ 
+
+<header>
+    <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/blogs">Blogs</a>
+        <a href="/gallery/">Gallery</a>
+    </nav>
+</header>
+
+
+    <main class="container site-main" role="main">
+        <article class="content">
+            <section class="body">
+
+                
+                <div class="post-description">
+                    <h1>Aetheron: Bringing My Own SoC to Life</h1>
+                                        
+                                            <img class="blog-cover" src="/assets/images/aetheron.png" alt="cover image" />
+                                        
+                    <div class="page-date">
+                        
+                        Published on 2025-07-18
+                        
+                    </div>
+                    <div class="authors-placeholder">
+                        
+                    </div>
+                    <div class="blog-tags">
+                        
+                        
+                        <a class="blog-tag" href="/tags/soc.html">soc</a>
+                        
+                        <a class="blog-tag" href="/tags/riscv.html">riscv</a>
+                        
+                        <a class="blog-tag" href="/tags/bluespec.html">bluespec</a>
+                        
+                        
+                    </div>
+                </div>
+                
+
+                <h2 id="introduction">Introduction</h2>
+<p><a href="https://github.com/pranav0x0112/Aetheron">Aetheron</a> is a small but complete RISC-V <a href="https://en.wikipedia.org/wiki/System_on_a_chip">System-on-Chip</a>, built entirely in <a href="https://github.com/rsnikhil/Bluespec_BSV_Tutorial">Bluespec SystemVerilog</a> and run in simulation. It features a pipelined CPU, memory-mapped peripherals, my own minimal TileLink interconnect, and can boot minimal bare metal C programs — all stitched together from scratch.</p>
+<p>But it’s more than just a collection of modules.</p>
+<p>I’ve always loved the idea of designing systems — not just writing code or building hardware in isolation, but understanding how they blend together. Fortunately, I had the privilege to attend a three-day workshop hosted by my seniors, <a href="https://www.linkedin.com/in/devesh-bhaskaran/">Devesh Bhaskaran</a> and <a href="https://www.linkedin.com/in/alfadelta10010/">Abhiram Gopal Dasika</a> where I was introduced to the world of <strong>Automotive SoC Design</strong>. I decided I wanted to build something that felt <strong>real</strong>: where the CPU actually boots a program, where peripherals respond to memory-mapped I/O, and where every instruction running in software maps to a transaction on a bus.</p>
+<p>&quot;Aetheron&quot; was born out of that drive.</p>
+<p>It started with just a CPU core, then quickly spiraled into a full-on SoC: with ROM, RAM, <a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter">UART</a>, and a <a href="https://starfivetech.com/uploads/tilelink_spec_1.8.1.pdf">TileLink</a> fabric to tie everything together. I didn’t want to reuse cores or plug in pre-built peripherals. This had to be something I understood fully — every wire, every rule, every hex file in the ROM image.</p>
+<blockquote>
+<p>Curious to know what exactly is a SoC? Click <a href="https://prawns.dev/blogs/what-is-a-soc">here</a> to read my blog about Introduction to SoCs.</p>
+</blockquote>
+<hr>
+<h2 id="setting-the-vision">Setting the Vision</h2>
+<h3 id="what-i-wanted-to-build"><strong>What I wanted to build</strong></h3>
+<p>From day one, I wasn’t interested in just blinking LEDs or simulating a few instructions. My goal was clear: build a <strong>bootable SoC</strong> that could run real software — not a demo, not hardcoded testbenches, but actual compiled C programs.</p>
+<p>I wanted:</p>
+<ul>
+<li>
+<p>A pipelined <strong>RISC-V CPU</strong> (RV32I) I could understand and modify.</p>
+</li>
+<li>
+<p><strong>ROM</strong> and <strong>RAM</strong> memory regions with clear separation.</p>
+</li>
+<li>
+<p>A <strong>TileLink</strong> interconnect, for clean and modular communication.</p>
+</li>
+<li>
+<p>Memory-mapped peripherals like <strong>UART</strong>, <strong>GPIO</strong>, and <strong>Timer</strong>.</p>
+</li>
+<li>
+<p>A boot process where the CPU fetched code from ROM, copied payloads into RAM, and executed them like a real embedded system.</p>
+</li>
+</ul>
+<p>In short: something you could imagine dropping into a real chip, even if it never left simulation.</p>
+<hr>
+<h2 id="early-decisions-i-made">Early decisions I made</h2>
+<p>One of the first choices was the instruction set. I went with <strong>RISC-V</strong> because it's clean, open, and designed to be simple — perfect for a project like this. It made writing my CPU pipeline much more enjoyable and gave me a standard to work against.</p>
+<p>For the HDL, I chose <strong>Bluespec SystemVerilog (BSV)</strong>. I already had experience with Verilog, but Bluespec’s rule-based semantics and powerful types made building a modular system much easier. Once you wrap your head around guarded atomic actions, you realize how expressive it is — especially for designing protocols like TileLink.</p>
+<p>I also went with <strong>TileLink</strong> as the on-chip interconnect protocol instead of something like <a href="https://developer.arm.com/documentation/102202/0300/What-is-AMBA--and-why-use-it-">AMBA</a>. TileLink’s open, light weight and fully-specified nature made it easier to reason about formally. Its decoupled, pipelined <code>a</code>/<code>d</code> channel design fit naturally into the rule-based model of BSV, and it scaled well as I added more peripherals.</p>
+<p>Finally, I decided early on that <strong>simulation-only was totally fine</strong>. I wasn’t aiming to synthesize this on an FPGA. I just wanted correctness, modularity, and the ability to run and debug C code end to end. That freedom let me move faster and focus on the design, not timing closure or board quirks.</p>
+<hr>
+<h2 id="the-first-steps">The First Steps</h2>
+<h3 id="designing-the-building-blocks"><strong>Designing the building blocks</strong></h3>
+<p>I began with the bare minimum: a <strong>CPU</strong>, <strong>ROM</strong>, <strong>RAM</strong>, and <strong>UART</strong> — all stitched together through a custom <strong>TileLink interconnect</strong>. At this point, the SoC didn’t boot any real programs. It wasn’t even executing C yet. But my focus was on getting the <strong>pipeline running</strong> in order to see actual instructions being fetched, decoded, and executed.</p>
+<p>The <strong>CPU design started as a stub</strong> — a placeholder module that just returned hardcoded values. It helped me bring up the rest of the system without worrying about instruction execution yet. Once the rest of the SoC took shape, I <strong>replaced the stub with a proper 5-stage pipelined core</strong> called <a href="https://github.com/pranav0x0112/Specula"><strong>Specula</strong></a>. At the time, Specula was a relatively simple in-order RISC-V core. It would eventually evolve into something far more ambitious: a true <strong>Out-of-Order</strong> processor. But for now, it was my way of getting real programs flowing through an instruction pipeline.</p>
+<p>The <strong>ROM</strong> was modeled as a read-only memory block, used to hold the bootloader and payload at simulation time. The <strong>RAM</strong> was a simple byte-addressable memory model, accessible via TileLink. And the <strong>UART</strong>, while basic, was my only way to get output from inside the SoC — my single window into what the CPU was doing.</p>
+<figure>
+<img src="https://github.com/pranav0x0112/Aetheron/blob/main/misc/full_rom_to_ram_boot.png?raw=true" alt="full_rom_to_ram_boot.png">
+</figure>
+<blockquote>
+<p>The full ROM → RAM boot process in Aetheron</p>
+</blockquote>
+<h3 id="testing-with-assembly"><strong>Testing with assembly</strong></h3>
+<p>At this stage, I was manually writing tiny <strong>RISC-V assembly test programs</strong>, compiling them into <code>.text</code> and <code>.data</code> sections, converting them into hex files, and loading them into ROM. No C yet — just handcrafted instructions to test branching, memory stores, and UART writes.</p>
+<p>This was also when I first got UART output working in my assembly code.</p>
+<figure>
+<img src="https://github.com/pranav0x0112/Aetheron/blob/main/misc/uart_success.png?raw=true" alt="uart_success.png">
+</figure>
+<blockquote>
+<p>And just like that the CPU could <em>talk</em> :D</p>
+</blockquote>
+<hr>
+<h2 id="roadblocks--debugging-era">Roadblocks &amp; Debugging Era</h2>
+<blockquote>
+<p>As with all systems design, just when things seemed stable — everything broke.</p>
+</blockquote>
+<p>Up to this point, I had a functioning ROM, RAM, UART, and a pipelined CPU. My bootloader, written in RISC-V assembly, was executing correctly, and I could print characters over UART using simple <code>sw</code> instructions. Things felt solid. It was time to try running a C program.</p>
+<p>That’s when it all began to crumble.</p>
+<h3 id="1-the-case-of-the-silent-uart">1. The Case of the Silent UART</h3>
+<p>I compiled a tiny C program, linked it with my custom script, and embedded the binary into ROM. But when I ran the simulation… nothing. No UART output. Just silence.</p>
+<p>I suspected a mapping issue. Was my C code writing to the wrong MMIO address? But <code>UART_ADDRESS = 0x40001000</code> matched in both hardware and software. Everything checked out — yet nothing was printing.</p>
+<p>I turned to trace logs. I dumped every memory access, register write, UART state change. That’s when I noticed: the CPU wasn't even reaching <code>printf()</code>. It was looping somewhere much earlier.</p>
+<h3 id="2-memory-mapping--peripheral-routing">2. Memory Mapping &amp; Peripheral Routing</h3>
+<p>Maybe the hardware was at fault? I added debug prints in the TileLink interconnect and peripherals. I confirmed: writes to <code>0x40001000</code> <em>were</em> routed correctly to the UART. Address decoding wasn’t the issue.</p>
+<figure>
+<img src="https://github.com/pranav0x0112/Aetheron/raw/main/misc/memory-map.png" alt="Aetheron-Memory-Map">
+</figure>
+<h3 id="3-toolchain--linker-script-confusion">3. Toolchain &amp; Linker Script Confusion</h3>
+<p>The Makefile, linker scripts, and <code>objcopy</code> pipeline were fragile. I reviewed every line: memory regions, section assignments, symbol names. Using <code>readelf</code>, <code>objdump</code>, and <code>objcopy</code>, I inspected each ELF and binary output. Slowly, I rebuilt a correct linker script that mapped ROM and RAM properly.</p>
+<p>But still — the program didn’t run.</p>
+<h3 id="4-the-payload-that-never-was">4. The Payload That Never Was</h3>
+<p>Finally, I suspected a deeper issue — not the code itself, but how it was getting into ROM.</p>
+<p>See, my bootloader was supposed to copy a <code>.payload</code> section from ROM to RAM, then jump to it. But what if that section wasn’t even being included in the final ROM image?</p>
+<p>I checked the ELF file using <code>riscv64-elf-objdump -h</code> and saw something weird: the <code>.payload</code> section was listed, but with <code>VMA = 0x0</code> and zero file offset. It looked like the section existed… but wasn’t actually backed by any data in the binary.</p>
+<p>The culprit was <code>objcopy</code>. My Makefile used:</p>
+<pre><code class="language-bash">riscv64-elf-objcopy -O binary -j .payload ...
+</code></pre>
+<p>But that doesn’t extract the section properly if the linker never placed it right in the first place.</p>
+<p>At one point, my linker script had something <em>like</em>:</p>
+<pre><code class="language-plaintext">.payload : { *(.text .text.* .rodata .data .bss) }
+</code></pre>
+<p>But that only works if the incoming <code>.o</code> file explicitly labels those sections as part of <code>.payload</code>. In my case, it didn’t. The payload data existed under normal sections (<code>.text</code>, <code>.rodata</code>, etc.), but nothing instructed the linker to collect them under <code>.payload</code>.</p>
+<p>I rewrote the linker script to explicitly place the payload contents, added the <code>.payload</code> symbol in the source to force section labeling, and rechecked everything with <code>objdump</code>. This time the section showed up with the right address and size. The resulting <code>.bin</code> was properly populated.</p>
+<p>I regenerated <code>rom.hex</code>, ran the simulation… and there it was. My <code>rom.hex</code> finally contained a working payload, and Aetheron executed its first C program.</p>
+<hr>
+<h2 id="key-learnings">Key Learnings</h2>
+<p>Looking back, building Aetheron taught me far more than just how to wire up peripherals or write linker scripts.</p>
+<ul>
+<li>
+<p><strong>Hardware/software co-design is real.</strong> Designing the SoC and writing code for it in tandem helped me see how tightly coupled these layers are. Every software bug was a chance to inspect my hardware — and vice versa.</p>
+</li>
+<li>
+<p><strong>Debugging is a full-stack art.</strong> From the ROM image to C code to UART signals, every layer matters. Sometimes the problem isn’t the code — it’s how your tools handle it.</p>
+</li>
+<li>
+<p><strong>Don’t underestimate simulation.</strong> I didn't need an FPGA or fancy board. Just a solid simulation setup, trace dumps, and a good mental model were enough to build and boot real programs.</p>
+</li>
+</ul>
+<p>Most importantly, I learned to enjoy the grind — to sit with a problem, question every assumption, and slowly trace my way to a solution.</p>
+<blockquote>
+<p>Interested to read about my SoC Learnings? <a href="https://github.com/pranav0x0112/prawns-stack/tree/main/SoC_learnings">Click here</a> :D, I try to keep it up-to-date.</p>
+</blockquote>
+<hr>
+<h2 id="whats-next">What’s Next</h2>
+<p>Aetheron is far from finished. There’s still a lot more I want to explore and build on top of it. One of the first goals is adding interrupt support, so peripherals like the Timer can trigger software events.</p>
+<p>And then there's a fun suggestion from one of my seniors <a href="https://www.linkedin.com/in/joyenbenitto/">Joyen Benitto</a> where he mentioned I should try building a custom accelerator that sits on an AHB TileLink slave port. Maybe a memory-mapped matrix multiplier: write your operands to an address, and read back the result. That idea stuck with me. Now that the TileLink fabric and basic SoC infrastructure are in place, Aetheron feels like the perfect playground to try something like that.</p>
+<hr>
+<h2 id="final-thoughts">Final Thoughts</h2>
+<p>Aetheron was more than just a successful project as it reflects how I think, the systems I dream of, and the way I approach problems. It’s a culmination of goals, ideas, mistakes, and long nights chasing one more bug.</p>
+<p>I hope it also serves as a spark for others to build their own systems, question abstractions, and enjoy the messy, brilliant process of bringing hardware to life!</p>
+
+            </section>
+        </article>
+
+        
+        <section class="graph-bottom" aria-label="Graph view">
+            <h3 class="graph-bottom-title">Graph View</h3>
+            <div id="mini-graph" class="graph-container mini"></div>
+        </section>
+        
+    </main>
+
+    
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <div class="copyright">Rendered using <a href="https://github.com/anna-ssg/anna">anna</a> 💙</div>
+    </div>
+    <script> (function () { var el = document.getElementById('site-year'); if (el) el.textContent = new Date().getFullYear(); })();
+
+         
+        (function () {
+            var ham = document.getElementById('hamburger'); if (!ham) return;
+
+            function setNavStateOnLoadOrResize() {
+                
+                if (window.innerWidth > 700) {
+                    document.body.classList.remove('nav-open');
+                    ham.setAttribute('aria-expanded', 'false');
+                } else {
+                    
+                    document.body.classList.remove('nav-open');
+                    ham.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            function toggleNav() {
+                var isOpen = document.body.classList.toggle('nav-open');
+                ham.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            }
+
+            
+            setNavStateOnLoadOrResize();
+
+            ham.addEventListener('click', toggleNav);
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { document.body.classList.remove('nav-open'); ham.setAttribute('aria-expanded', 'false'); } });
+            window.addEventListener('resize', setNavStateOnLoadOrResize);
+            
+            document.addEventListener('click', function (e) { if (!document.body.classList.contains('nav-open')) return; if (!e.target.closest || !e.target.closest('.site-header')) { document.body.classList.remove('nav-open'); ham.setAttribute('aria-expanded', 'false'); } });
+        })();</script>
+</footer>
+
+</body>
+
+</html>
+

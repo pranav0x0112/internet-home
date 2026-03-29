@@ -1,0 +1,245 @@
+
+
+
+
+ 
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>You Don&#39;t Need Expensive Tools to Play with Silicon</title>
+
+    
+    <link rel="stylesheet" href="/static/styles/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    
+    <link rel="icon" href="/static/images/anna.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/anna.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/anna.png" />
+    <link rel="apple-touch-icon" href="/static/images/anna.png" />
+    <meta name="theme-color" content="#171c28" />
+
+    
+    <link id="hljs-dark" rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css" />
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
+
+    <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
+
+    
+      
+    <script src="/static/scripts/graph.js" defer></script>
+    
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="You Don&#39;t Need Expensive Tools to Play with Silicon" />
+    <meta property="og:description" content="A hands-on guide to free, open-source tools that let students design, simulate, and build real processors, no million-dollar lab required." />
+    <meta property="og:image" content="" />
+
+    <meta name="description" content="A hands-on guide to free, open-source tools that let students design, simulate, and build real processors, no million-dollar lab required." />
+
+    <script defer>
+        if (typeof hljs !== 'undefined') {
+            hljs.highlightAll();
+            if (typeof CopyButtonPlugin !== 'undefined') {
+                hljs.addPlugin(new CopyButtonPlugin());
+            }
+        }
+    </script>
+</head>
+
+
+<body class="site-body">
+
+    
+
+ 
+
+<header>
+    <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/blogs">Blogs</a>
+        <a href="/gallery/">Gallery</a>
+    </nav>
+</header>
+
+
+    <main class="container site-main" role="main">
+        <article class="content">
+            <section class="body">
+
+                
+                <div class="post-description">
+                    <h1>You Don&#39;t Need Expensive Tools to Play with Silicon</h1>
+                                        
+                    <div class="page-date">
+                        
+                        Published on 2026-02-07
+                        
+                    </div>
+                    <div class="authors-placeholder">
+                        
+                    </div>
+                    <div class="blog-tags">
+                        
+                        
+                        <a class="blog-tag" href="/tags/tech.html">tech</a>
+                        
+                        <a class="blog-tag" href="/tags/RISC-V.html">RISC-V</a>
+                        
+                        <a class="blog-tag" href="/tags/FOSS.html">FOSS</a>
+                        
+                        <a class="blog-tag" href="/tags/hardware.html">hardware</a>
+                        
+                        
+                    </div>
+                </div>
+                
+
+                <h2 id="so-youre-sold-on-risc-v-youve-seen-the-vision-now-comes-the-question-every-beginner-asks-okay-but-how-do-i-actually-start">So you're sold on RISC-V. You've seen the vision. Now comes the question every beginner asks: <em>&quot;Okay, but how do I actually start?&quot;</em></h2>
+<p>In the <a href="https://homebrew.hsp-ec.xyz/posts/risc-v:-the-linux-of-hardware/">previous post</a>, we explored why RISC-V is the &quot;Linux of hardware&quot; and how it's making processor design accessible to everyone. Now let's talk about the actual tools that let you build, simulate, and hack on real processors.</p>
+<p><strong>The good news?</strong> You don't need expensive licenses, proprietary toolchains, or a university lab. The hardware hacking stack is wide open and it's free.</p>
+<h2 id="breaking-the-myth-hardware--expensive">Breaking the Myth: Hardware != Expensive</h2>
+<p>When most people think &quot;chip design,&quot; they imagine locked-down corporate tools with five-figure licenses: <a href="https://en.wikipedia.org/wiki/Cadence_Design_Systems">Cadence</a>, <a href="https://en.wikipedia.org/wiki/Synopsys">Synopsys</a>, <a href="https://en.wikipedia.org/wiki/Mentor_Graphics">Mentor Graphics</a>. And yeah, industry still uses those. But here's what's changed in the last decade:</p>
+<p><strong>The FOSS hardware ecosystem has grown up.</strong></p>
+<p>Just like Linux gave us <code>gcc</code>, <code>vim</code>, and <code>git</code>, the hardware world now has <a href="https://yosyshq.net/yosys/">Yosys</a>, <a href="https://www.veripool.org/verilator/">Verilator</a>, and <a href="https://theopenroadproject.org/">OpenROAD</a>. Students, hobbyists, and even startups are designing real chips with these tools: chips that actually get manufactured and work.</p>
+<p>The barrier to entry isn't money anymore. It's just knowing where to look.</p>
+<h2 id="the-open-hardware-toolchain-your-new-best-friends">The Open Hardware Toolchain: Your New Best Friends</h2>
+<p>Let's walk through the essential tools that take you from &quot;I have an idea&quot; to &quot;I have a working processor.&quot; Think of this as your hardware hacker starter pack.</p>
+<h3 id="1-simulation-verilator--icarus-verilog"><strong>1. Simulation: Verilator &amp; Icarus Verilog</strong></h3>
+<p>Simulation is basically running your hardware design in software to see how it behaves, think of it like a test drive before you commit to building the real thing. Writing hardware code (Verilog/VHDL) without simulation is like coding in C without ever compiling. You need to see if your logic actually works: does your processor fetch the right instruction? Does your ALU compute correctly?</p>
+<p><strong><a href="https://www.veripool.org/verilator/">Verilator</a></strong> is the Usain Bolt of the bunch. It converts your Verilog code into C++ and compiles it into a native executable, which makes it insanely fast and perfect for simulating large designs like full processors. It's cycle-accurate, meaning it simulates your design clock cycle by clock cycle, just like the real hardware would run. The trade-off? It's a bit more complex to set up, but once you get it running, you'll appreciate the speed :)</p>
+<p><strong><a href="http://iverilog.icarus.com/">Icarus Verilog</a></strong> is the friendlier option for beginners. It's an event-driven simulator that's simpler to use and doesn't require you to write testbenches in C++. Just write your Verilog, compile it with the command <code>iverilog</code>, and run it with <code>vvp</code>. Pair it with <strong><a href="http://gtkwave.sourceforge.net/">GTKWave</a></strong> to visualize signals as waveforms, and you've got a complete simulation workflow. It's not as fast as Verilator for huge designs, but for learning and debugging, it's perfect.</p>
+<p>Try simulating a simple counter or a full adder. Watch the waveforms change. It's oddly satisfying to see logic come alive on your screen.</p>
+<figure>
+<img src="https://i.postimg.cc/hjqnQ850/Prawns-2026-02-07-13-06-48.png" alt="GTKWave">
+</figure>
+<blockquote>
+<p>A GTKWave waveform illustrating the timing of control, datapath, and ALU signals in a CPU core.</p>
+</blockquote>
+<hr>
+<h3 id="2-synthesis-yosys"><strong>2. Synthesis: Yosys</strong></h3>
+<p>This is where your abstract &quot;hardware description&quot; becomes real logic that could be etched onto silicon. <a href="https://yosyshq.net/yosys/">Yosys</a> converts your high-level Verilog code into a gate-level netlist: actual logic gates like AND, OR, and flip-flops.</p>
+<p>Think of Yosys as the <strong><code>gcc</code> of hardware</strong>. It compiles your design into something a chip fab (or FPGA) can understand. Yosys is scriptable, modular, and works with a ton of FPGA and ASIC flows. It's used in actual chip tapeouts through projects like <a href="https://github.com/google/skywater-pdk">Google's open PDKs</a> (a PDK, or Process Design Kit, is basically the instruction manual for a specific chip fabrication process: it tells your tools how that particular factory makes transistors).</p>
+<figure>
+<img src="https://i.postimg.cc/Jn1kcXy3/yosys-block-diagram.png" alt="yosys-block-diagram">
+</figure>
+<blockquote>
+<p>The synthesis flow: your high-level hardware description gets compiled down to actual logic gates that can be implemented in silicon.</p>
+</blockquote>
+<p>So, feed Yosys a simple Verilog module, run synthesis, and look at the output netlist. Watching your code transform into gates is pretty cool.</p>
+<hr>
+<h3 id="3-place--route-openroad"><strong>3. Place &amp; Route: OpenROAD</strong></h3>
+<p>Synthesis gives you logic. Place &amp; route gives you geometry: where each gate sits, how wires connect, timing constraints, power routing. This is the final step before manufacturing.</p>
+<p><strong><a href="https://theopenroadproject.org/">OpenROAD</a></strong> is an open-source ASIC flow that takes your gate-level netlist and turns it into an actual physical chip layout. It handles everything from floorplanning (deciding where blocks go) to detailed routing (connecting all the wires) to timing analysis (making sure your chip actually works at the speed you want).</p>
+<p>What makes OpenROAD special is that it's not just a toy project, it's being used in real chip tapeouts. Companies and researchers are using it with <a href="https://github.com/google/skywater-pdk">Google's SkyWater 130nm PDK</a> and platforms like <a href="https://chipflow.io/">ChipFlow</a> to manufacture actual silicon. The same flow that powers multi-million dollar chip designs is now available to anyone with a laptop.</p>
+<p>The workflow is surprisingly straightforward: feed it your synthesized netlist, tell it about your target technology (via a PDK), set your constraints, and let it do its thing. It'll optimize placement, route all the connections, check timing, and spit out a GDSII file, the final layout that gets sent to the fab.</p>
+<p>So, you're literally designing the physical layout of a chip. This used to be reserved for grad students and industry engineers and now it's something you can mess around with on a Tuesday night.</p>
+<figure>
+<img src="https://i.postimg.cc/QdFzq9L4/gds.png" alt="gds.png">
+</figure>
+<blockquote>
+<p>My chip layout post place &amp; route. Those colorful rectangles and wires? That's real geometry heading to the fab.</p>
+</blockquote>
+<hr>
+<h3 id="4-risc-v-cores-the-playground"><strong>4. RISC-V Cores: The Playground</strong></h3>
+<p>Now that you have the tools, what do you build? Here's where pre-existing RISC-V cores come in, think of them as reference designs you can learn from, modify, extend and even contribute to.</p>
+<p><strong><a href="https://github.com/YosysHQ/picorv32">PicoRV32</a></strong> is arguably the most famous RISC-V core, tiny and simple around 1000 lines of Verilog. Perfect for beginners because you can actually read and understand the whole thing. Simulate it, run a &quot;Hello World&quot; program, trace how instructions execute.</p>
+<figure>
+<img src="https://i.postimg.cc/YCfJ04FM/picorv32.jpg" alt="picorv32.jpg">
+</figure>
+<p><strong><a href="https://github.com/riscv-boom/riscv-boom">BOOM (Berkeley Out-of-Order Machine)</a></strong> is the other end of the table, a high-performance, Out-of-Order RISC-V core. When you're ready to level up, BOOM teaches you modern processor techniques. Study the pipeline, see how dynamic scheduling works.</p>
+<figure>
+<img src="https://i.postimg.cc/3rcfxXbf/boom.png" alt="boom.png">
+</figure>
+<p><strong><a href="https://github.com/pranav0x0112/RISCape">RISCape</a></strong> (shameless plug) is my 5-stage pipelined RISC-V core. Built by a student, for students. If I can do it, you absolutely can too. Fork it, break it, fix it, extend it. That's how you learn.</p>
+<figure>
+<img src="https://i.postimg.cc/2jsJxdFB/riscape.png" alt="riscape.png">
+</figure>
+<blockquote>
+<p>We can see the three levels of RISC-V cores: PicoRV32 for learning the basics, RISCape for understanding pipelines, BOOM for exploring modern processor techniques.</p>
+</blockquote>
+<hr>
+<h3 id="5-tiny-tapeout-your-shot-at-real-silicon"><strong>5. Tiny Tapeout: Your Shot at Real Silicon</strong></h3>
+<p>Remember all those tools we just talked about? <a href="https://tinytapeout.com/">Tiny Tapeout</a> is where you actually use them to manufacture real chips.</p>
+<p>Tiny Tapeout is a platform that makes chip fabrication accessible. Instead of paying hundreds of thousands of dollars for a solo manufacturing run, multiple designs get combined into one &quot;shuttle&quot; and share the cost. For around $100-150, you can get your design fabricated in actual silicon using processes like IHP SG13G2 or SkyWater 130nm. No company backing, no research lab required, just you, your design, and a submission deadline.</p>
+<p>I first heard about Tiny Tapeout while working on a <a href="https://www.prawns.dev/blogs/what-is-a-soc">System-on-Chip (SoC) project</a> with some friends. The idea that students could tape out real chips felt almost too good to be true. My first real dive was through a <a href="https://tinytapeout.com/competitions/risc-v-peripheral/">crowd-sourced competition</a> where participants contributed peripherals for a RISC-V SoC. That got me hooked, read about my submission <a href="https://www.prawns.dev/blogs/tiny-tone">here</a>!</p>
+<p>After that, I decided to go all in and do a dedicated tapeout of my own: <a href="https://github.com/pranav0x0112/Herald">Herald</a>, a co-processor that handles CORDIC (coordinate rotation) and MAC (multiply-accumulate) operations. The workflow? Design in Verilog, simulate it, synthesize with Yosys, place &amp; route with OpenROAD, verify timing, submit your GDSII file, and wait for the shuttle to tape out.</p>
+<p>Sounds smooth, right? It wasn't. Errors after errors timing violations, things that worked in simulation but failed in hardware checks. But here's the thing: the Tiny Tapeout community is incredibly active. Ask a question on Discord (even if you think it's silly), and someone will help. The barriers aren't technical anymore, they're just learning curves, and the community helps you climb them.</p>
+<figure>
+<img src="https://i.postimg.cc/Zn6jLFgy/full-gds.png" alt="full-gds.png">
+</figure>
+<blockquote>
+<p>Real Tiny Tapeout shuttle layout (Shuttle - IHP26A) showing multiple designs(including mine) combined into one manufacturing run. Each colorful section is someone's chip: students, hobbyists, researchers all sharing the same silicon :)</p>
+</blockquote>
+<p>What makes Tiny Tapeout special isn't just that it's affordable. It's that you're using the <strong>exact same tools and flows</strong> that industry uses. You're not playing with toy simulators or fake environments. You're designing real chips, following real constraints, and getting real manufactured silicon at the end. That's the ultimate validation.</p>
+<p>If you've been following along with the tools in this post—Verilator, Yosys, OpenROAD then Tiny Tapeout is where you put them all together. It's the final level of the training arc: from simulating logic gates to holding a physical chip with your design etched into it.</p>
+<hr>
+<h2 id="closing-the-only-question-left-is-what-will-you-build">Closing: The Only Question Left Is &quot;What Will You Build?&quot;</h2>
+<p>A decade ago, you needed a million-dollar lab to design a processor. Today, you need a laptop and curiosity.</p>
+<p>The tools are here. The cores are open. The community is waiting.</p>
+<p>You've seen the philosophy <a href="https://homebrew.hsp-ec.xyz/posts/risc-v:-the-linux-of-hardware/">here</a>. You've seen the tools in this post. In the next post, we'll go deep into pipelines, out-of-order execution, hazards, caches, and the real magic happening inside modern processors. We'll talk about how I approached building <a href="https://github.com/pranav0x0112/RISCape">RISCape</a>, the challenges I faced, and what I learned about computer architecture along the way.</p>
+<p>But for now? Start small. Run the tools. Let things break.
+The rest follows.</p>
+
+            </section>
+        </article>
+
+        
+        <section class="graph-bottom" aria-label="Graph view">
+            <h3 class="graph-bottom-title">Graph View</h3>
+            <div id="mini-graph" class="graph-container mini"></div>
+        </section>
+        
+    </main>
+
+    
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <div class="copyright">Rendered using <a href="https://github.com/anna-ssg/anna">anna</a> 💙</div>
+    </div>
+    <script> (function () { var el = document.getElementById('site-year'); if (el) el.textContent = new Date().getFullYear(); })();
+
+         
+        (function () {
+            var ham = document.getElementById('hamburger'); if (!ham) return;
+
+            function setNavStateOnLoadOrResize() {
+                
+                if (window.innerWidth > 700) {
+                    document.body.classList.remove('nav-open');
+                    ham.setAttribute('aria-expanded', 'false');
+                } else {
+                    
+                    document.body.classList.remove('nav-open');
+                    ham.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            function toggleNav() {
+                var isOpen = document.body.classList.toggle('nav-open');
+                ham.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            }
+
+            
+            setNavStateOnLoadOrResize();
+
+            ham.addEventListener('click', toggleNav);
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { document.body.classList.remove('nav-open'); ham.setAttribute('aria-expanded', 'false'); } });
+            window.addEventListener('resize', setNavStateOnLoadOrResize);
+            
+            document.addEventListener('click', function (e) { if (!document.body.classList.contains('nav-open')) return; if (!e.target.closest || !e.target.closest('.site-header')) { document.body.classList.remove('nav-open'); ham.setAttribute('aria-expanded', 'false'); } });
+        })();</script>
+</footer>
+
+</body>
+
+</html>
+
