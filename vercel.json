@@ -1,0 +1,9 @@
+{
+  "build": {
+    "env": {
+      "GO_VERSION": "1.22"
+    }
+  },
+  "buildCommand": "go run main.go",
+  "outputDirectory": "site/rendered"
+}
