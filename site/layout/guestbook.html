@@ -1,0 +1,82 @@
+{{ define "guestbook" }}
+{{ template "head" . }}
+
+<body class="site-body">
+    {{ template "header" . }}
+    <main class="container site-main" role="main">
+        <section class="guestbook">
+            <h1>Guestbook</h1>
+
+            <form id="guestbook-form">
+                <input type="text" id="name" placeholder="Your name" required />
+                <textarea id="message" placeholder="Your message" required></textarea>
+                <button type="submit">Sign</button>
+            </form>
+
+            <div id="entries"></div>
+        </section>
+    </main>
+    {{ template "footer" . }}
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyD9PY_J-YImDGCy9NuOx2VcucqePo67Qjo",
+          authDomain: "guestbook-7cf08.firebaseapp.com",
+          projectId: "guestbook-7cf08",
+          storageBucket: "guestbook-7cf08.appspot.com",
+          messagingSenderId: "279025282521",
+          appId: "1:279025282521:web:3a4e75163f92f06a41fdc8",
+          measurementId: "G-XL4TWD8RRG",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadEntries() {
+          const q = query(collection(db, "guestbook"), orderBy("timestamp", "desc"));
+          const snapshot = await getDocs(q);
+
+          const container = document.getElementById("entries");
+          container.innerHTML = "";
+
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            const div = document.createElement("div");
+            div.className = "entry";
+
+            const name = document.createElement("strong");
+            name.textContent = data.name;
+
+            const message = document.createElement("p");
+            message.textContent = data.message;
+
+            div.appendChild(name);
+            div.appendChild(message);
+            container.appendChild(div);
+          });
+        }
+
+        document.getElementById("guestbook-form").addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const name = document.getElementById("name").value;
+          const message = document.getElementById("message").value;
+
+          await addDoc(collection(db, "guestbook"), {
+            name,
+            message,
+            timestamp: serverTimestamp()
+          });
+
+          await loadEntries();
+          e.target.reset();
+        });
+
+        loadEntries();
+    </script>
+</body>
+
+{{ end }}

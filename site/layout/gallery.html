@@ -1,0 +1,22 @@
+{{ define "gallery" }}
+{{ $PageData := index .DeepDataMerge.Templates .PageURL }}
+{{ template "head" . }}
+
+<body class="site-body gallery-page">
+    {{ template "header" . }}
+    <main class="container site-main gallery-shell" role="main">
+        <article class="content gallery-content">
+            <h1 class="collection-title">{{ $PageData.Frontmatter.Title }}</h1>
+            <div class="gallery-grid">
+                {{ range .GalleryImages }}
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/{{ . }}" loading="lazy" alt="">
+                    </figure>
+                {{ end }}
+            </div>
+        </article>
+    </main>
+    {{ template "footer" . }}
+</body>
+
+{{ end }}

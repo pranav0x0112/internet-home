@@ -3,8 +3,11 @@ package engine
 import (
 	"bytes"
 	"html/template"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
+	fp "path/filepath"
 
 	"github.com/anna-ssg/anna/v3/pkg/logger"
 	"github.com/anna-ssg/anna/v3/pkg/parser"
@@ -53,6 +56,8 @@ type PageData struct {
 	DeepDataMerge DeepDataMerge
 
 	PageURL template.URL
+	Image string
+	GalleryImages []string
 }
 
 // JSONIndexTemplate This structure is solely used for storing the JSON index
@@ -93,6 +98,44 @@ func (e *Engine) RenderPage(fileOutPath string, pagePath template.URL, template 
 	pageData := PageData{
 		DeepDataMerge: e.DeepDataMerge,
 		PageURL:       pagePath,
+		Image:         e.DeepDataMerge.Templates[pagePath].Frontmatter.Image,
+	}
+
+	if string(pagePath) == "gallery/index.html" {
+		root, _ := os.Getwd()
+		galleryPath := fp.Join(root, "assets", "images", "gallery")
+		entries, err := os.ReadDir(galleryPath)
+		if err != nil {
+			e.ErrorLogger.Fatal(err)
+		}
+
+		allowedExts := map[string]struct{}{
+			".jpg":  {},
+			".jpeg": {},
+			".png":  {},
+			".webp": {},
+		}
+
+		images := make([]string, 0, len(entries))
+		for _, entry := range entries {
+			if entry.IsDir() {
+				continue
+			}
+
+			ext := strings.ToLower(fp.Ext(entry.Name()))
+			if _, ok := allowedExts[ext]; !ok {
+				continue
+			}
+
+			images = append(images, entry.Name())
+		}
+
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(images), func(i, j int) {
+			images[i], images[j] = images[j], images[i]
+		})
+
+		pageData.GalleryImages = images
 	}
 
 	// Storing the rendered HTML file to a buffer

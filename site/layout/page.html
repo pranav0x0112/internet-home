@@ -9,9 +9,12 @@
         <article class="content">
             <section class="body">
 
-                {{ if ne (len $PageData.Frontmatter.Title) 0 }}
+                {{ if and (ne (len $PageData.Frontmatter.Title) 0) (ne $PageData.Frontmatter.Title "Pranav") }}
                 <div class="post-description">
                     <h1>{{ $PageData.Frontmatter.Title }}</h1>
+                                        {{ if .Image }}
+                                            <img class="blog-cover" src="{{ .Image }}" alt="cover image" />
+                                        {{ end }}
                     <div class="page-date">
                         {{ if ne (len $PageData.Frontmatter.Date) 0 }}
                         Published on {{$PageData.Frontmatter.Date}}
@@ -23,10 +26,10 @@
                         </p>
                         {{ end }}
                     </div>
-                    <div class="tags-placeholder">
+                    <div class="blog-tags">
                         {{ if ne (len $PageData.Frontmatter.Tags) 0 }}
                         {{range $PageData.Frontmatter.Tags}}
-                        <a class="tag" href="/tags/{{.}}.html">{{.}}</a>
+                        <a class="blog-tag" href="/tags/{{.}}.html">{{.}}</a>
                         {{end}}
                         {{ end }}
                     </div>

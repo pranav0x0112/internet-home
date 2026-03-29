@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"sort"
 
 	"github.com/anna-ssg/anna/v3/pkg/helpers"
 	"github.com/anna-ssg/anna/v3/pkg/logger"
@@ -42,6 +43,7 @@ type Frontmatter struct {
 	Draft        bool                `yaml:"draft"`
 	JSFiles      []string            `yaml:"scripts"`
 	Description  string              `yaml:"description"`
+	Image        string              `yaml:"image"`
 	PreviewImage string              `yaml:"previewimage"`
 	Tags         []string            `yaml:"tags"`
 	TOC          bool                `yaml:"toc"`
@@ -367,6 +369,72 @@ func (p *Parser) ParseLayoutFiles() *template.Template {
 				}
 			}
 			return false
+		},
+		"formatDate": func(v interface{}) string {
+			if v == nil {
+				return ""
+			}
+			switch val := v.(type) {
+			case string:
+				if val == "" {
+					return ""
+				}
+				// use parser's DateParse to support multiple date formats
+				t := p.DateParse(val)
+				return t.Format("Jan 2, 2006")
+			case int64:
+				return time.Unix(val, 0).Format("Jan 2, 2006")
+			case int:
+				return time.Unix(int64(val), 0).Format("Jan 2, 2006")
+			case float64:
+				return time.Unix(int64(val), 0).Format("Jan 2, 2006")
+			default:
+				return ""
+			}
+		},
+		"collectByPrefixSorted": func(prefix string, exclude string) []TemplateData {
+			var list []TemplateData
+			for k, t := range p.Templates {
+				ks := string(k)
+				if strings.HasPrefix(ks, prefix) && ks != exclude {
+					list = append(list, t)
+				}
+			}
+			sort.Slice(list, func(i, j int) bool { return list[i].Date > list[j].Date })
+			return list
+		},
+		"listFiles": func(relDir string) []string {
+			root, _ := os.Getwd()
+			galleryPath := filepath.Join(root, "assets", "images", "gallery")
+
+			entries, err := os.ReadDir(galleryPath)
+			if err != nil {
+				return nil
+			}
+
+			allowedExts := map[string]struct{}{
+				".jpg":  {},
+				".jpeg": {},
+				".png":  {},
+				".webp": {},
+			}
+
+			files := make([]string, 0, len(entries))
+			for _, entry := range entries {
+				if entry.IsDir() {
+					continue
+				}
+
+				ext := strings.ToLower(filepath.Ext(entry.Name()))
+				if _, ok := allowedExts[ext]; !ok {
+					continue
+				}
+
+				files = append(files, entry.Name())
+			}
+
+			sort.Strings(files)
+			return files
 		},
 	})
 

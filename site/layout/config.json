@@ -27,7 +27,10 @@
   "customFields": {
     "Github": "https://github.com/anna-ssg/anna"
   },
-  "collectionLayouts": {
-    "collections/posts.html": "all-posts"
+    "collectionLayouts": {
+    "blogs/index.html": "all-posts",
+    "projects/index.html": "all-posts",
+    "collections/blogs.html": "all-posts",
+    "collections/projects.html": "all-posts"
   }
 }

@@ -8,6 +8,7 @@ build:
 	@echo "anna: building with commit $(COMMIT)"
 	@go build -ldflags "$(LDFLAGS)"
 	@./anna
+	@sh scripts/post_build_copy.sh
 
 serve:
 	@echo "anna: serving site"

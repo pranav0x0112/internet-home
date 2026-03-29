@@ -1,8 +1,10 @@
 package anna
 
 import (
+	"io"
 	"html/template"
 	"os"
+	"path/filepath"
 
 	"github.com/anna-ssg/anna/v3/pkg/engine"
 	"github.com/anna-ssg/anna/v3/pkg/helpers"
@@ -87,7 +89,55 @@ func (cmd *Cmd) VanillaRender(siteDirPath string) int {
 	e.RenderUserDefinedPages(siteDirPath, templ)
 	e.RenderTags(siteDirPath, templ)
 	e.RenderCollections(siteDirPath, templ)
+	copyAssetsDir(siteDirPath)
 
 	// Return number of templates/pages rendered for reporting
 	return len(e.DeepDataMerge.Templates)
+}
+
+func copyAssetsDir(siteDirPath string) {
+	rootDir, _ := os.Getwd()
+	sourceDir := filepath.Join(rootDir, "assets")
+	destDir := filepath.Join(siteDirPath, "rendered", "assets")
+
+	copyDirRecursive(sourceDir, destDir)
+}
+
+func copyDirRecursive(sourceDir string, destDir string) {
+	entries, err := os.ReadDir(sourceDir)
+	if err != nil {
+		return
+	}
+
+	if err := os.MkdirAll(destDir, 0750); err != nil {
+		return
+	}
+
+	for _, entry := range entries {
+		sourcePath := filepath.Join(sourceDir, entry.Name())
+		destPath := filepath.Join(destDir, entry.Name())
+
+		if entry.IsDir() {
+			if err := os.MkdirAll(destPath, 0750); err != nil {
+				return
+			}
+			copyDirRecursive(sourcePath, destPath)
+			continue
+		}
+
+		sourceFile, err := os.Open(sourcePath)
+		if err != nil {
+			return
+		}
+
+		destFile, err := os.Create(destPath)
+		if err != nil {
+			sourceFile.Close()
+			return
+		}
+
+		_, _ = io.Copy(destFile, sourceFile)
+		_ = sourceFile.Close()
+		_ = destFile.Close()
+	}
 }
