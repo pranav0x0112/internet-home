@@ -147,9 +147,13 @@ func (p *Parser) AddFile(baseDirPath string, dirEntryPath string, frontmatter Fr
 	key, _ := strings.CutPrefix(testFilepath, p.SiteDataPath+"content/")
 	url, _ := strings.CutSuffix(key, ".md")
 	url += ".html"
+	completeURL := url
+	if strings.HasPrefix(url, "blogs/") && url != "blogs/index.html" {
+		completeURL = strings.TrimSuffix(url, ".html") + "/"
+	}
 
 	page := TemplateData{
-		CompleteURL: template.URL(url),
+		CompleteURL: template.URL(completeURL),
 		Date:        date,
 		Frontmatter: frontmatter,
 		Body:        template.HTML(body),

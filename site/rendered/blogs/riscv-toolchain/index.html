@@ -34,13 +34,6 @@
     <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
 
     
-    
-    <script>
-        const eventSource = new EventSource("http://localhost:8000/events");
-        eventSource.onmessage = function (event) {
-            location.reload();
-        };
-    </script>
       
 
     <meta property="og:type" content="website" />
@@ -175,7 +168,7 @@
 <h3 id="5-tiny-tapeout-your-shot-at-real-silicon"><strong>5. Tiny Tapeout: Your Shot at Real Silicon</strong></h3>
 <p>Remember all those tools we just talked about? <a href="https://tinytapeout.com/">Tiny Tapeout</a> is where you actually use them to manufacture real chips.</p>
 <p>Tiny Tapeout is a platform that makes chip fabrication accessible. Instead of paying hundreds of thousands of dollars for a solo manufacturing run, multiple designs get combined into one &quot;shuttle&quot; and share the cost. For around $100-150, you can get your design fabricated in actual silicon using processes like IHP SG13G2 or SkyWater 130nm. No company backing, no research lab required, just you, your design, and a submission deadline.</p>
-<p>I first heard about Tiny Tapeout while working on a <a href="https://www.prawns.dev/blogs/what-is-a-soc">System-on-Chip (SoC) project</a> with some friends. The idea that students could tape out real chips felt almost too good to be true. My first real dive was through a <a href="https://tinytapeout.com/competitions/risc-v-peripheral/">crowd-sourced competition</a> where participants contributed peripherals for a RISC-V SoC. That got me hooked, read about my submission <a href="https://www.prawns.dev/blogs/tiny-tone">here</a>!</p>
+<p>I first heard about Tiny Tapeout while working on a <a href="https://www.prawns.dev/blogs/what-is-a-soc/">System-on-Chip (SoC) project</a> with some friends. The idea that students could tape out real chips felt almost too good to be true. My first real dive was through a <a href="https://tinytapeout.com/competitions/risc-v-peripheral/">crowd-sourced competition</a> where participants contributed peripherals for a RISC-V SoC. That got me hooked, read about my submission <a href="https://www.prawns.dev/blogs/tiny-tone/">here</a>!</p>
 <p>After that, I decided to go all in and do a dedicated tapeout of my own: <a href="https://github.com/pranav0x0112/Herald">Herald</a>, a co-processor that handles CORDIC (coordinate rotation) and MAC (multiply-accumulate) operations. The workflow? Design in Verilog, simulate it, synthesize with Yosys, place &amp; route with OpenROAD, verify timing, submit your GDSII file, and wait for the shuttle to tape out.</p>
 <p>Sounds smooth, right? It wasn't. Errors after errors timing violations, things that worked in simulation but failed in hardware checks. But here's the thing: the Tiny Tapeout community is incredibly active. Ask a question on Discord (even if you think it's silly), and someone will help. The barriers aren't technical anymore, they're just learning curves, and the community helps you climb them.</p>
 <figure>

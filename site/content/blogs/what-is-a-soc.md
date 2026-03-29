@@ -99,4 +99,4 @@ If this sparked even a bit of curiosity, I think you’ll enjoy **Aetheron**, my
 
 See you there :)
 
-[→ _[Read Aetheron: Bringing My Own SoC to Life →]_](https://prawns.dev/blogs/aetheron)
+[→ _[Read Aetheron: Bringing My Own SoC to Life →]_](https://prawns.dev/blogs/aetheron/)

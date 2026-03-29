@@ -21,7 +21,7 @@ I’ve always loved the idea of designing systems — not just writing code or b
 
 It started with just a CPU core, then quickly spiraled into a full-on SoC: with ROM, RAM, [UART](https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter), and a [TileLink](https://starfivetech.com/uploads/tilelink_spec_1.8.1.pdf) fabric to tie everything together. I didn’t want to reuse cores or plug in pre-built peripherals. This had to be something I understood fully — every wire, every rule, every hex file in the ROM image.
 
-> Curious to know what exactly is a SoC? Click [here](https://prawns.dev/blogs/what-is-a-soc) to read my blog about Introduction to SoCs.
+> Curious to know what exactly is a SoC? Click [here](https://prawns.dev/blogs/what-is-a-soc/) to read my blog about Introduction to SoCs.
 
 ---
 

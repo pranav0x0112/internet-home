@@ -1,3 +1,13 @@
 {
-  "outputDirectory": "site/rendered"
+  "outputDirectory": "site/rendered",
+  "routes": [
+    {
+      "src": "/blogs/?",
+      "dest": "/blogs/index.html"
+    },
+    {
+      "src": "/blogs/(.*)",
+      "dest": "/blogs/$1/index.html"
+    }
+  ]
 }

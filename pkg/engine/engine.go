@@ -79,9 +79,19 @@ template - stores the HTML templates parsed from the layout/ directory
 templateStartString - stores the name of the template to be passed to ExecuteTemplate()
 */
 func (e *Engine) RenderPage(fileOutPath string, pagePath template.URL, template *template.Template, templateStartString string) {
-	// Creating subdirectories if the filepath contains '/'
-	if strings.Contains(string(pagePath), "/") {
-		// Extracting the directory path from the page path
+	outputPath := fileOutPath + "rendered/" + string(pagePath)
+	if strings.HasPrefix(string(pagePath), "blogs/") && strings.HasSuffix(string(pagePath), ".html") && string(pagePath) != "blogs/index.html" {
+		blogPath := strings.TrimSuffix(string(pagePath), ".html")
+		if err := os.MkdirAll(fileOutPath+"rendered/"+blogPath, 0750); err != nil {
+			e.ErrorLogger.Fatal(err)
+		}
+		outputPath = fileOutPath + "rendered/" + blogPath + "/index.html"
+		_ = os.Remove(fileOutPath + "rendered/" + string(pagePath))
+	} else if strings.Contains(string(pagePath), "/") {
+		if string(pagePath) == "blogs/index.html" {
+			_ = os.RemoveAll(fileOutPath + "rendered/blogs/index")
+		}
+		// Creating subdirectories if the filepath contains '/'
 		splitPaths := strings.Split(string(pagePath), "/")
 		filename := splitPaths[len(splitPaths)-1]
 		pagePathWithoutFilename, _ := strings.CutSuffix(string(pagePath), filename)
@@ -91,8 +101,6 @@ func (e *Engine) RenderPage(fileOutPath string, pagePath template.URL, template 
 			e.ErrorLogger.Fatal(err)
 		}
 	}
-
-	filepath := fileOutPath + "rendered/" + string(pagePath)
 	var buffer bytes.Buffer
 
 	pageData := PageData{
@@ -146,7 +154,7 @@ func (e *Engine) RenderPage(fileOutPath string, pagePath template.URL, template 
 	}
 
 	// Flushing data from the buffer to the disk
-	err = os.WriteFile(filepath, buffer.Bytes(), 0666)
+	err = os.WriteFile(outputPath, buffer.Bytes(), 0666)
 	if err != nil {
 		e.ErrorLogger.Fatal(err)
 	}
