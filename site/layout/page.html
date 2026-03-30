@@ -36,7 +36,19 @@
                 </div>
                 {{ end }}
 
-                {{$PageData.Body}}
+                {{$PageData.Body}}{{- if .RecentTracks }}
+                <section class="listening-now">
+                    <h2>
+                        Listening to on
+                        <a href="https://www.last.fm/user/prawns_baka" target="_blank" rel="noopener">Last.fm</a>
+                    </h2>
+                    <ul>
+                        {{ range .RecentTracks }}
+                        <li>{{ .Artist }} — {{ .Name }}</li>
+                        {{ end }}
+                    </ul>
+                </section>
+                {{- end }}
             </section>
         </article>
 
