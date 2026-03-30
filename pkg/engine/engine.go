@@ -59,7 +59,7 @@ type PageData struct {
 	Image         string
 	GalleryImages []string
 	IsHome        bool
-	Env           map[string]string
+	LastFMAPIKey  string
 }
 
 // JSONIndexTemplate This structure is solely used for storing the JSON index
@@ -109,12 +109,10 @@ func (e *Engine) RenderPage(fileOutPath string, pagePath template.URL, template 
 		DeepDataMerge: e.DeepDataMerge,
 		PageURL:       pagePath,
 		Image:         e.DeepDataMerge.Templates[pagePath].Frontmatter.Image,
+		LastFMAPIKey:  os.Getenv("LASTFM_API_KEY"),
 	}
 	if string(pagePath) == "index.html" {
 		pageData.IsHome = true
-		pageData.Env = map[string]string{
-			"LASTFM_API_KEY": os.Getenv("LASTFM_API_KEY"),
-		}
 	}
 
 	if string(pagePath) == "gallery/index.html" {

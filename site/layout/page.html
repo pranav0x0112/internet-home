@@ -50,8 +50,9 @@
 
     </main>
 
-    {{- if and .IsHome .Env.LASTFM_API_KEY }}
-    <script defer src="/static/js/lastfm.js" data-lastfm-key="{{ .Env.LASTFM_API_KEY }}"></script>
+    {{- if .IsHome }}
+    <script defer src="/static/js/lastfm.js"
+        data-lastfm-key="{{ .LastFMAPIKey }}"></script>
     {{- end }}
 
     {{template "footer" .}}
