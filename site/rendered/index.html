@@ -34,13 +34,6 @@
     <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
 
     
-    
-    <script>
-        const eventSource = new EventSource("http://localhost:8000/events");
-        eventSource.onmessage = function (event) {
-            location.reload();
-        };
-    </script>
       
 
     <meta property="og:type" content="website" />
@@ -119,8 +112,7 @@
         </article>
 
     </main>
-    <script defer src="/static/js/lastfm.js"
-        data-lastfm-key=""></script>
+    <script defer src="/static/js/lastfm.js"></script>
 
     
 <footer class="site-footer">
