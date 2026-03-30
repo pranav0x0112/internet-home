@@ -5,9 +5,9 @@ import (
 	"html/template"
 	"math/rand"
 	"os"
+	fp "path/filepath"
 	"strings"
 	"time"
-	fp "path/filepath"
 
 	"github.com/anna-ssg/anna/v3/pkg/logger"
 	"github.com/anna-ssg/anna/v3/pkg/parser"
@@ -41,6 +41,11 @@ type DeepDataMerge struct {
 	JSONIndex map[template.URL]JSONIndexTemplate
 }
 
+type Track struct {
+	Artist string
+	Name   string
+}
+
 type Engine struct {
 	// Stores the merged ssg data
 	DeepDataMerge DeepDataMerge
@@ -55,9 +60,10 @@ type Engine struct {
 type PageData struct {
 	DeepDataMerge DeepDataMerge
 
-	PageURL template.URL
-	Image string
+	PageURL       template.URL
+	Image         string
 	GalleryImages []string
+	RecentTracks  []Track
 }
 
 // JSONIndexTemplate This structure is solely used for storing the JSON index
@@ -107,6 +113,9 @@ func (e *Engine) RenderPage(fileOutPath string, pagePath template.URL, template 
 		DeepDataMerge: e.DeepDataMerge,
 		PageURL:       pagePath,
 		Image:         e.DeepDataMerge.Templates[pagePath].Frontmatter.Image,
+	}
+	if string(pagePath) == "index.html" {
+		pageData.RecentTracks = fetchRecentTracks()
 	}
 
 	if string(pagePath) == "gallery/index.html" {
