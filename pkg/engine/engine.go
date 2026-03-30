@@ -41,11 +41,6 @@ type DeepDataMerge struct {
 	JSONIndex map[template.URL]JSONIndexTemplate
 }
 
-type Track struct {
-	Artist string
-	Name   string
-}
-
 type Engine struct {
 	// Stores the merged ssg data
 	DeepDataMerge DeepDataMerge
@@ -63,7 +58,8 @@ type PageData struct {
 	PageURL       template.URL
 	Image         string
 	GalleryImages []string
-	RecentTracks  []Track
+	IsHome        bool
+	Env           map[string]string
 }
 
 // JSONIndexTemplate This structure is solely used for storing the JSON index
@@ -115,7 +111,10 @@ func (e *Engine) RenderPage(fileOutPath string, pagePath template.URL, template 
 		Image:         e.DeepDataMerge.Templates[pagePath].Frontmatter.Image,
 	}
 	if string(pagePath) == "index.html" {
-		pageData.RecentTracks = fetchRecentTracks()
+		pageData.IsHome = true
+		pageData.Env = map[string]string{
+			"LASTFM_API_KEY": os.Getenv("LASTFM_API_KEY"),
+		}
 	}
 
 	if string(pagePath) == "gallery/index.html" {

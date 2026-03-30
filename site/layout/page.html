@@ -36,23 +36,23 @@
                 </div>
                 {{ end }}
 
-                {{$PageData.Body}}{{- if .RecentTracks }}
+                {{$PageData.Body}}{{- if .IsHome }}
                 <section class="listening-now">
                     <h2>
                         Listening to on
                         <a href="https://www.last.fm/user/prawns_baka" target="_blank" rel="noopener">Last.fm</a>
                     </h2>
-                    <ul>
-                        {{ range .RecentTracks }}
-                        <li>{{ .Artist }} — {{ .Name }}</li>
-                        {{ end }}
-                    </ul>
+                    <ul id="lastfm-tracks"></ul>
                 </section>
                 {{- end }}
             </section>
         </article>
 
     </main>
+
+    {{- if and .IsHome .Env.LASTFM_API_KEY }}
+    <script defer src="/static/js/lastfm.js" data-lastfm-key="{{ .Env.LASTFM_API_KEY }}"></script>
+    {{- end }}
 
     {{template "footer" .}}
 </body>
