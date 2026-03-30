@@ -15,9 +15,10 @@ const TestDirPath = "../../test/parser/"
 
 func TestAddFileAndRender(t *testing.T) {
 	gotParser := parser.Parser{
-		Templates:   make(map[template.URL]parser.TemplateData),
-		TagsMap:     make(map[template.URL][]parser.TemplateData),
-		ErrorLogger: logger.New(os.Stderr),
+		Templates:      make(map[template.URL]parser.TemplateData),
+		TagsMap:        make(map[template.URL][]parser.TemplateData),
+		CollectionsMap: make(map[template.URL][]parser.TemplateData),
+		ErrorLogger:    logger.New(os.Stderr),
 	}
 
 	wantLayout := parser.LayoutConfig{
@@ -38,9 +39,10 @@ func TestAddFileAndRender(t *testing.T) {
 			t.Errorf("%v", err)
 		}
 		wantParser := parser.Parser{
-			Templates:   make(map[template.URL]parser.TemplateData),
-			TagsMap:     make(map[template.URL][]parser.TemplateData),
-			ErrorLogger: gotParser.ErrorLogger,
+			Templates:      make(map[template.URL]parser.TemplateData),
+			TagsMap:        make(map[template.URL][]parser.TemplateData),
+			CollectionsMap: make(map[template.URL][]parser.TemplateData),
+			ErrorLogger:    gotParser.ErrorLogger,
 		}
 		sampleFrontmatter, _, markdownContent, parseSuccess := gotParser.ParseMarkdownContent(string(inputMd), "sample_test_path")
 		sampleBody := "sample_body"
@@ -73,6 +75,27 @@ func TestAddFileAndRender(t *testing.T) {
 			// t.Errorf("please see the files yourself")
 		}
 	})
+}
+
+func TestAddFileSkipsBlogsIndexCollectionEntry(t *testing.T) {
+	p := parser.Parser{
+		Templates:      make(map[template.URL]parser.TemplateData),
+		TagsMap:        make(map[template.URL][]parser.TemplateData),
+		CollectionsMap: make(map[template.URL][]parser.TemplateData),
+		ErrorLogger:    logger.New(os.Stderr),
+		SiteDataPath:   "site/",
+	}
+
+	frontmatter := parser.Frontmatter{
+		Title:       "Blogs",
+		Collections: []string{"blogs"},
+	}
+
+	p.AddFile("site/content/", "blogs/index.md", frontmatter, "# Blogs", "<p>Blogs</p>")
+
+	if _, ok := p.CollectionsMap[template.URL("collections/blogs.html")]; ok {
+		t.Fatalf("expected blogs index page to be excluded from the blogs collection")
+	}
 }
 
 func TestParseMarkdownContent(t *testing.T) {

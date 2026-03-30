@@ -9,9 +9,9 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
-	"sort"
 
 	"github.com/anna-ssg/anna/v3/pkg/helpers"
 	"github.com/anna-ssg/anna/v3/pkg/logger"
@@ -459,6 +459,10 @@ func (p *Parser) ParseLayoutFiles() *template.Template {
 
 // Adding the page to the collections map with the corresponding collections and sub-collections
 func (p *Parser) collectionsParser(page TemplateData) {
+	if page.CompleteURL == "blogs/index.html" {
+		return
+	}
+
 	// Iterating over all sets of collections defined in the frontmatter
 	for _, collectionSet := range page.Frontmatter.Collections {
 
