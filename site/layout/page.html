@@ -51,8 +51,7 @@
     </main>
 
     {{- if .IsHome }}
-    <script defer src="/static/js/lastfm.js"
-        data-lastfm-key="{{ .LastFMAPIKey }}"></script>
+    <script defer src="/static/js/lastfm.js"></script>
     {{- end }}
 
     {{template "footer" .}}
