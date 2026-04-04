@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>https://anna-docs.netlify.app/blogs/aetheron/</loc>
-		<lastmod>2025-07-18</lastmod>
+		<loc>https://anna-docs.netlify.app/blogs/riscv-linux/</loc>
+		<lastmod>2025-09-07</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/blogs/riscv-toolchain/</loc>
+		<lastmod>2026-02-07</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/guestbook/index.html</loc>
+		<lastmod></lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/projects/herald.html</loc>
+		<lastmod></lastmod>
 	</url>
 	<url>
 		<loc>https://anna-docs.netlify.app/blogs/herald/</loc>
@@ -13,28 +25,8 @@
 		<lastmod></lastmod>
 	</url>
 	<url>
-		<loc>https://anna-docs.netlify.app/blogs/riscv-linux/</loc>
-		<lastmod>2025-09-07</lastmod>
-	</url>
-	<url>
 		<loc>https://anna-docs.netlify.app/blogs/simt_warp_divergence/</loc>
 		<lastmod>2025-12-02</lastmod>
-	</url>
-	<url>
-		<loc>https://anna-docs.netlify.app/guestbook/index.html</loc>
-		<lastmod></lastmod>
-	</url>
-	<url>
-		<loc>https://anna-docs.netlify.app/index.html</loc>
-		<lastmod></lastmod>
-	</url>
-	<url>
-		<loc>https://anna-docs.netlify.app/projects/herald.html</loc>
-		<lastmod></lastmod>
-	</url>
-	<url>
-		<loc>https://anna-docs.netlify.app/blogs/riscv-toolchain/</loc>
-		<lastmod>2026-02-07</lastmod>
 	</url>
 	<url>
 		<loc>https://anna-docs.netlify.app/blogs/tiny-tone/</loc>
@@ -47,5 +39,13 @@
 	<url>
 		<loc>https://anna-docs.netlify.app/gallery/index.html</loc>
 		<lastmod></lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/index.html</loc>
+		<lastmod></lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/blogs/aetheron/</loc>
+		<lastmod>2025-07-18</lastmod>
 	</url>
 </urlset>
