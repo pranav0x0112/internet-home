@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
+    <title>About</title>
 
     
     <link rel="stylesheet" href="/static/styles/main.css" />
@@ -37,7 +37,7 @@
       
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="" />
+    <meta property="og:title" content="About" />
     <meta property="og:description" content="" />
     <meta property="og:image" content="" />
 
@@ -54,7 +54,8 @@
 </head>
 
 
-<body class="site-body">
+<body class="site-body about-page">
+
     
 
  
@@ -70,47 +71,60 @@
 
 
     <main class="container site-main" role="main">
-        <article class="content">
-            <section class="posts">
-                <div class="all-tags">
-                    
-                    <a href="/tags/bluespec.html">bluespec</a>
-                    
-                    <a href="/tags/DSP.html">DSP</a>
-                    
-                    <a href="/tags/embedded.html">embedded</a>
-                    
-                    <a href="/tags/FOSS.html">FOSS</a>
-                    
-                    <a href="/tags/gpu.html">gpu</a>
-                    
-                    <a href="/tags/hardware.html">hardware</a>
-                    
-                    <a href="/tags/linux.html">linux</a>
-                    
-                    <a href="/tags/open-source-silicon.html">open-source-silicon</a>
-                    
-                    <a href="/tags/open-source.html">open-source</a>
-                    
-                    <a href="/tags/pwm.html">pwm</a>
-                    
-                    <a href="/tags/RISC-V.html">RISC-V</a>
-                    
-                    <a href="/tags/riscv.html">riscv</a>
-                    
-                    <a href="/tags/simt.html">simt</a>
-                    
-                    <a href="/tags/soc.html">soc</a>
-                    
-                    <a href="/tags/tech.html">tech</a>
-                    
-                    <a href="/tags/Tiny%20Tapeout.html">Tiny Tapeout</a>
-                    
-                    <a href="/tags/tiny-tapeout.html">tiny-tapeout</a>
-                    
-                    <a href="/tags/VLSI.html">VLSI</a>
-                    
+        <article class="content about-content">
+            <section class="body about-layout">
+                <div class="about-copy">
+                    <h2 id="about">About</h2>
+<p>Hi, I'm Pranav (I have no idea what to write here).</p>
+<section class="about-section about-section-engineering">
+<div class="about-section-text about-text">
+<h3>Engineering</h3>
+<p>I'm an undergraduate electronics student who spends a lot of time thinking about computer architecture, hardware design, RISC-V, and open source silicon. I enjoy understanding how processors actually work under the hood and building things that get closer to the silicon.</p>
+<p>Most of the technical stuff I write about here comes from things I'm learning, experimenting with, or breaking and fixing along the way.</p>
+</div>
+<div class="about-section-media about-image">
+<img class="about-section-image about-engineering-image" src="/images/tinytapeout.png" alt="TinyTapeout layout" loading="lazy">
+</div>
+</section>
+<section class="about-section about-section-music">
+<div class="about-section-media about-image">
+<img class="about-section-image about-guitar-image" src="/images/guitar.jpg" alt="Guitar" loading="lazy">
+</div>
+<div class="about-section-text about-text">
+<h3>Music</h3>
+<p>Outside of engineering, I spend a lot of time with music and guitar. I'm really into rock - especially Dire Straits (easily my favourite), along with Queen, Led Zeppelin, Green Day, and Arctic Monkeys.</p>
+</div>
+</section>
+<section class="about-section about-section-sketching">
+<div class="about-section-text about-text">
+<h3>Sketching</h3>
+<p>As someone who's been drawing since he was 5, I've always enjoyed sketching. I'm still learning new things every day and it's something I genuinely love doing.</p>
+<p>See more in the <a href="/gallery/">Gallery</a></p>
+</div>
+<div class="about-section-media about-image">
+<img class="about-section-image about-sketch-image" src="/images/minato.jpg" alt="Minato drawing" loading="lazy">
+</div>
+</section>
+<section class="about-section about-section-text-only">
+<div class="about-section-text about-text">
+<h3>Other things I enjoy</h3>
+<ul>
+<li>playing badminton</li>
+<li>doing pencil sketches (some of them are in the Gallery)</li>
+<li>trying to find a really good dosa</li>
+<li>exploring random things that catch my interest</li>
+</ul>
+<p>I also have a weird but genuine fascination with snakes.</p>
+</div>
+</section>
+<p>This site is basically my small corner of the internet where I write about things I build, learn, and occasionally obsess over.</p>
+
                 </div>
+                
+                <aside class="about-art" aria-hidden="true">
+                    <img src="/images/sakura.png" alt="" loading="lazy">
+                </aside>
+                
             </section>
         </article>
     </main>
@@ -174,7 +188,6 @@
             document.addEventListener('click', function (e) { if (!document.body.classList.contains('nav-open')) return; if (!e.target.closest || !e.target.closest('.site-header')) { document.body.classList.remove('nav-open'); ham.setAttribute('aria-expanded', 'false'); } });
         })();</script>
 </footer>
-
 
 </body>
 

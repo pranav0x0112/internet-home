@@ -1,0 +1,28 @@
+{{ define "about" }}
+{{$PageData := index .DeepDataMerge.Templates .PageURL}}
+{{ template "head" .}}
+
+<body class="site-body about-page">
+
+    {{template "header" .}}
+    <main class="container site-main" role="main">
+        <article class="content about-content">
+            <section class="body about-layout">
+                <div class="about-copy">
+                    {{$PageData.Body}}
+                </div>
+                {{ if $PageData.Frontmatter.Image }}
+                <aside class="about-art" aria-hidden="true">
+                    <img src="{{ $PageData.Frontmatter.Image }}" alt="" loading="lazy">
+                </aside>
+                {{ end }}
+            </section>
+        </article>
+    </main>
+
+    {{template "footer" .}}
+</body>
+
+</html>
+
+{{ end }}

@@ -204,6 +204,177 @@ footer p {
     line-height: 1.7;
 }
 
+.about-layout {
+    position: relative;
+    padding-right: min(260px, 30vw);
+}
+
+.about-copy {
+    min-width: 0;
+}
+
+.about-copy h3 {
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+}
+
+.about-copy ul {
+    margin-top: 0;
+}
+
+.about-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 2.5rem;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.about-section:first-of-type {
+    margin-top: 50px;
+}
+
+.about-section-text p {
+    margin: 0 0 1rem;
+    line-height: 1.75;
+}
+
+.about-section-text p:last-child {
+    margin-bottom: 0;
+}
+
+.about-section-text ul {
+    margin: 0 0 1rem;
+    padding-left: 1.25rem;
+}
+
+.about-section-text li + li {
+    margin-top: 0.35rem;
+}
+
+.about-section-text h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.about-section-media {
+    min-width: 0;
+}
+
+.about-section-text-only {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.about-section-image {
+    display: block;
+    margin: 0.1rem 0;
+    border-radius: 12px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35), 0 0 14px rgba(122, 162, 255, 0.12);
+}
+
+.about-engineering-image {
+    width: min(300px, 100%);
+    max-width: 300px;
+}
+
+img[src*="tinytapeout"] {
+}
+
+.about-guitar-image {
+    width: min(260px, 100%);
+    max-width: 260px;
+}
+
+.about-section-music {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    align-items: start;
+    gap: 40px;
+}
+
+.about-section-music .about-section-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.about-sketch-image {
+    width: 240px;
+    max-width: 240px;
+}
+
+img[src*="minato"] {
+    width: 240px;
+    max-width: 240px;
+}
+
+.about-art {
+    position: absolute;
+    top: -40px;
+    right: 40px;
+    width: 180px;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.82;
+}
+
+.about-art img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+@media (max-width: 760px) {
+    .about-layout {
+        padding-right: 0;
+    }
+
+    .about-section,
+    .about-section-music {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+        margin-top: 50px;
+    }
+
+    .about-section-media {
+        order: 1;
+    }
+
+    .about-section-text {
+        order: 2;
+
+    .about-section-music .about-section-media {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    }
+
+    .about-section-image {
+        display: block;
+        margin: 0 0 0.5rem;
+        width: min(100%, 300px);
+        max-width: 100%;
+    }
+
+    .about-art {
+        position: static;
+        width: min(220px, 65vw);
+        margin: 0.75rem 0 1rem auto;
+    }
+
+    .about-engineering-image,
+    .about-guitar-image,
+    .about-sketch-image {
+        max-width: 100%;
+    }
+
+    .about-engineering-image {
+        margin-top: 0;
+    }
+}
+
 .listening-now {
     max-width: 700px;
     margin: 1rem auto 0;
@@ -2364,6 +2535,20 @@ pre>code {
 
 /* Header and footer layout */
 .site-header,
+.guitar-badge {
+    animation: guitarGlowPulse 2.8s ease-in-out infinite;
+    filter: drop-shadow(0 0 2px #00ffff);
+}
+
+@keyframes guitarGlowPulse {
+    0%,
+    100% {
+        filter: drop-shadow(0 0 2px #00ffff);
+    }
+    50% {
+        filter: drop-shadow(0 0 8px #00ffff);
+    }
+}
 .site-footer {
     border-bottom: none;
     background: var(--color-surface);
