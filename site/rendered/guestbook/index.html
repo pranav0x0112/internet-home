@@ -177,8 +177,43 @@
             const message = document.createElement("p");
             message.textContent = data.message;
 
-            div.appendChild(name);
-            div.appendChild(message);
+            const timestamp = data.timestamp;
+            let dateText = "";
+
+            if (timestamp) {
+              let date = null;
+
+              if (typeof timestamp.toDate === "function") {
+                date = timestamp.toDate();
+              } else if (typeof timestamp.seconds === "number") {
+                const millis = timestamp.seconds * 1000 + Math.floor((timestamp.nanoseconds || 0) / 1000000);
+                date = new Date(millis);
+              } else {
+                date = new Date(timestamp);
+              }
+
+              if (date instanceof Date && !Number.isNaN(date.getTime())) {
+                dateText = date.toLocaleString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  hour: "numeric",
+                  minute: "2-digit"
+                }).replace(/, (?=\d{1,2}:\d{2}\s?[AP]M$)/, " • ");
+              }
+            }
+
+            if (dateText) {
+              const dateEl = document.createElement("p");
+              dateEl.className = "entry-date";
+              dateEl.textContent = dateText;
+              div.appendChild(name);
+              div.appendChild(message);
+              div.appendChild(dateEl);
+            } else {
+              div.appendChild(name);
+              div.appendChild(message);
+            }
             container.appendChild(div);
           });
         }
