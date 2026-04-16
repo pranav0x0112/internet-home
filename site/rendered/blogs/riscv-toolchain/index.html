@@ -34,6 +34,13 @@
     <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
 
     
+    
+    <script>
+        const eventSource = new EventSource("http://localhost:8000/events");
+        eventSource.onmessage = function (event) {
+            location.reload();
+        };
+    </script>
       
 
     <meta property="og:type" content="website" />
@@ -108,7 +115,7 @@
 <h2 id="breaking-the-myth-hardware--expensive">Breaking the Myth: Hardware != Expensive</h2>
 <p>When most people think &quot;chip design,&quot; they imagine locked-down corporate tools with five-figure licenses: <a href="https://en.wikipedia.org/wiki/Cadence_Design_Systems">Cadence</a>, <a href="https://en.wikipedia.org/wiki/Synopsys">Synopsys</a>, <a href="https://en.wikipedia.org/wiki/Mentor_Graphics">Mentor Graphics</a>. And yeah, industry still uses those. But here's what's changed in the last decade:</p>
 <p><strong>The FOSS hardware ecosystem has grown up.</strong></p>
-<p>Just like Linux gave us <code>gcc</code>, <code>vim</code>, and <code>git</code>, the hardware world now has <a href="https://yosyshq.net/yosys/">Yosys</a>, <a href="https://www.veripool.org/verilator/">Verilator</a>, and <a href="https://theopenroadproject.org/">OpenROAD</a>. Students, hobbyists, and even startups are designing real chips with these tools: chips that actually get manufactured and work.</p>
+<p>Just like the Unix and GNU ecosystem gave us tools like <code>gcc</code>and <code>vim</code>, and later <code>git</code>, the hardware world now has <a href="https://yosyshq.net/yosys/">Yosys</a>, <a href="https://www.veripool.org/verilator/">Verilator</a>, and <a href="https://theopenroadproject.org/">OpenROAD</a>. Students, hobbyists, and even startups are designing real chips with these tools: chips that actually get manufactured and work.</p>
 <p>The barrier to entry isn't money anymore. It's just knowing where to look.</p>
 <h2 id="the-open-hardware-toolchain-your-new-best-friends">The Open Hardware Toolchain: Your New Best Friends</h2>
 <p>Let's walk through the essential tools that take you from &quot;I have an idea&quot; to &quot;I have a working processor.&quot; Think of this as your hardware hacker starter pack.</p>
