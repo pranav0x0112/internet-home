@@ -14,6 +14,7 @@
 
     
     <link rel="stylesheet" href="/static/styles/main.css" />
+    <link rel="stylesheet" href="/static/styles/admonitions.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     
@@ -34,13 +35,6 @@
     <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
 
     
-    
-    <script>
-        const eventSource = new EventSource("http://localhost:8000/events");
-        eventSource.onmessage = function (event) {
-            location.reload();
-        };
-    </script>
       
 
     <meta property="og:type" content="website" />
@@ -83,6 +77,12 @@
                 
                 
                     <div class="blog-item">
+                        <h3 class="blog-title"><a href="/blogs/memory/">Why Your CPU Is Fast But Your Program Is Slow: Understanding the Memory Wall</a></h3>
+                        <div class="blog-date">Apr 18, 2026</div>
+                        <p class="blog-desc">An exploration of why fast CPUs still run slow programs, uncovering the memory wall through experiments, cache behavior, and data movement.</p>
+                    </div>
+                
+                    <div class="blog-item">
                         <h3 class="blog-title"><a href="/blogs/herald/">When Microcontrollers Struggle with Math: Building Herald</a></h3>
                         <div class="blog-date">Mar 29, 2026</div>
                         <p class="blog-desc">A deep dive into building Herald, a fixed-point DSP coprocessor for Tiny Tapeout, from architecture and CORDIC design to GDS layout and silicon.</p>
@@ -113,15 +113,15 @@
                     </div>
                 
                     <div class="blog-item">
-                        <h3 class="blog-title"><a href="/blogs/aetheron/">Aetheron: Bringing My Own SoC to Life</a></h3>
-                        <div class="blog-date">Jul 18, 2025</div>
-                        <p class="blog-desc">From wires to life: how I built and booted my own System-On-Chip using BlueSpec SystemVerilog</p>
-                    </div>
-                
-                    <div class="blog-item">
                         <h3 class="blog-title"><a href="/blogs/what-is-a-soc/">What is a System-on-Chip, Really?</a></h3>
                         <div class="blog-date">Jul 18, 2025</div>
                         <p class="blog-desc">A gentle breakdown of what SoCs are and why I’m obsessed with them.</p>
+                    </div>
+                
+                    <div class="blog-item">
+                        <h3 class="blog-title"><a href="/blogs/aetheron/">Aetheron: Bringing My Own SoC to Life</a></h3>
+                        <div class="blog-date">Jul 18, 2025</div>
+                        <p class="blog-desc">From wires to life: how I built and booted my own System-On-Chip using BlueSpec SystemVerilog</p>
                     </div>
                 
             </section>

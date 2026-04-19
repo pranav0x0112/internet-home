@@ -14,6 +14,7 @@
 
     
     <link rel="stylesheet" href="/static/styles/main.css" />
+    <link rel="stylesheet" href="/static/styles/admonitions.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     
@@ -34,13 +35,6 @@
     <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
 
     
-    
-    <script>
-        const eventSource = new EventSource("http://localhost:8000/events");
-        eventSource.onmessage = function (event) {
-            location.reload();
-        };
-    </script>
       
 
     <meta property="og:type" content="website" />
@@ -82,79 +76,7 @@
             <div class="gallery-grid">
                 
                     <figure class="gallery-item">
-                        <img src="/assets/images/gallery/drawing_5.jpg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/aura_farm_1.jpg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/last_fm_1.jpg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
                         <img src="/assets/images/gallery/sky_2.jpeg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/sky_1.jpeg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/flower_2.jpg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/drawing_2.jpeg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/car_1.jpeg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/moon_1.jpeg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/drawing_3.jpeg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/drawing_4.jpg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/last_fm_2.jpg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/drawing_6.jpg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/baby_1.jpg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/flower_1.jpeg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/tree_1.jpg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/sky_4.jpg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/sky_5.jpg" loading="lazy" alt="">
-                    </figure>
-                
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/drawing_1.jpeg" loading="lazy" alt="">
                     </figure>
                 
                     <figure class="gallery-item">
@@ -162,7 +84,79 @@
                     </figure>
                 
                     <figure class="gallery-item">
+                        <img src="/assets/images/gallery/sky_5.jpg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/last_fm_2.jpg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/flower_2.jpg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
                         <img src="/assets/images/gallery/sky_3.jpeg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/baby_1.jpg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/drawing_5.jpg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/tree_1.jpg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/drawing_3.jpeg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/drawing_6.jpg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/drawing_4.jpg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/moon_1.jpeg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/car_1.jpeg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/last_fm_1.jpg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/sky_4.jpg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/drawing_1.jpeg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/sky_1.jpeg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/aura_farm_1.jpg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/drawing_2.jpeg" loading="lazy" alt="">
+                    </figure>
+                
+                    <figure class="gallery-item">
+                        <img src="/assets/images/gallery/flower_1.jpeg" loading="lazy" alt="">
                     </figure>
                 
             </div>
