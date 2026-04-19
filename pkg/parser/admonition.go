@@ -8,49 +8,52 @@ import (
 // TransformAdmonitions converts GitHub-style admonitions in HTML to semantic admonition divs
 // This should be called after markdown -> HTML conversion
 func TransformAdmonitions(htmlContent string) string {
-	// Pattern to match blockquotes that start with [!TYPE]
-	// Uses (?s) flag for DOTALL mode to match across newlines
-	pattern := regexp.MustCompile(`(?s)<blockquote>\s*<p>\[!([^\]]+)\]\s*([^<]*)</p>(.*?)</blockquote>`)
+	// Match blockquotes starting with [!TYPE], capturing type and all remaining content
+	pattern := regexp.MustCompile(`(?s)<blockquote>\s*<p>\[!([^\]]+)\](.*?)</blockquote>`)
 
 	result := htmlContent
-	matches := pattern.FindAllStringSubmatchIndex(result, -1)
+	for {
+		match := pattern.FindStringSubmatchIndex(result)
+		if match == nil {
+			break
+		}
 
-	// Process matches in reverse order to maintain string indices when replacing
-	for i := len(matches) - 1; i >= 0; i-- {
-		match := matches[i]
 		startIdx := match[0]
 		endIdx := match[1]
 
-		// Extract components from groups
+		// Extract type
 		typeStart := match[2]
 		typeEnd := match[3]
-		admonType := strings.ToLower(htmlContent[typeStart:typeEnd])
+		admonType := strings.ToLower(result[typeStart:typeEnd])
 
-		// Group 2: first line content (after [!TYPE] and before </p>)
-		firstLineStart := match[4]
-		firstLineEnd := match[5]
-		firstLineContent := strings.TrimSpace(htmlContent[firstLineStart:firstLineEnd])
+		// Extract raw content (everything after ] until </blockquote>)
+		contentStart := match[4]
+		contentEnd := match[5]
+		rawContent := result[contentStart:contentEnd]
 
-		// Group 3: remaining content
-		restStart := match[6]
-		restEnd := match[7]
-		restContent := htmlContent[restStart:restEnd]
+		// Clean up the content
+		// Remove leading <br> tags and whitespace
+		cleanedContent := regexp.MustCompile(`^(<br\s*/?>|\s)+`).ReplaceAllString(rawContent, "")
 
-		// Build complete content
-		var contentBuilder strings.Builder
-		if firstLineContent != "" {
-			contentBuilder.WriteString("<p>")
-			contentBuilder.WriteString(firstLineContent)
-			contentBuilder.WriteString("</p>")
+		// Find first </p> to properly handle paragraphs
+		firstParaEnd := strings.Index(cleanedContent, "</p>")
+		var finalContent string
+
+		if firstParaEnd >= 0 {
+			firstPara := cleanedContent[:firstParaEnd]
+			restAfterPara := cleanedContent[firstParaEnd+4:] // skip "</p>"
+			restAfterPara = strings.TrimSpace(restAfterPara)
+
+			if restAfterPara != "" {
+				finalContent = "<p>" + strings.TrimSpace(firstPara) + "</p>" + restAfterPara
+			} else {
+				finalContent = "<p>" + strings.TrimSpace(firstPara) + "</p>"
+			}
+		} else {
+			finalContent = "<p>" + strings.TrimSpace(cleanedContent) + "</p>"
 		}
-		contentBuilder.WriteString(strings.TrimSpace(restContent))
 
-		content := contentBuilder.String()
-
-		// Build the semantic admonition HTML
-		admonition := buildAdmonitionHTML(admonType, content)
-
-		// Replace in result
+		admonition := buildAdmonitionHTML(admonType, finalContent)
 		result = result[:startIdx] + admonition + result[endIdx:]
 	}
 

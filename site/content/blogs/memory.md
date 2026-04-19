@@ -87,6 +87,10 @@ it is slow. So before we talk about how hardware tries to work around this
 problem, it is worth taking a few minutes to look at what is physically 
 happening inside a DRAM chip every time your program asks for a value.
 
+![Memory Wall](https://i.postimg.cc/d39z5nSv/wall.gif)
+
+> This is the memory wall. The left side is your CPU. The right side is your problem.
+
 ---
 
 ## How DRAM Actually Works
@@ -200,15 +204,16 @@ experiments rather than just taking a textbook's word for it?
 The framework is straightforward. There is a host - a CLI tool that runs 
 experiments and collects results. And there is a node - a server that holds 
 datasets in memory and executes operations on them. Right now both run on the 
-same machine, but the eventual goal is to run the node on a Raspberry Pi to 
-simulate what actual near-memory compute looks like. 
+same machine, but the eventual goal is to run the node on my Raspberry Pi 5 to 
+loosely simulate near-memory compute - not the real thing by any stretch, 
+but enough to study how moving compute closer to data actually affects the numbers.
 
 > [!Fun Fact]  
 > The name Aletheia comes from the Greek word for truth or disclosure - which felt appropriate for a 
 > project whose entire purpose is to make the hardware tell you what it is 
 > actually doing.
 
-I ran several experiments -- a basic dataset scan, a vector addition workload, 
+I ran several experiments - a basic dataset scan, a vector addition workload, 
 and the one that ended up being the most interesting: a stride scan.
 
 The stride scan works like this. Instead of reading through an array 
@@ -217,13 +222,165 @@ stride of 1 means you read every element. A stride of 4 means you read every
 fourth element. A stride of 4096 means you are making very large jumps through 
 memory. The access pattern looks like this:
 
-```rust
-index = (k * stride) % N
-```
+`index = (k * stride) % N`
 
 The dataset was fixed at 256MB throughout. I tested strides of 1, 4, 16, 64, 
 256, and 4096, and measured how long each took. My expectation going in was 
-that performance would degrade gradually and smoothly as the stride increased 
--- bigger jumps, slightly worse performance, nothing dramatic.
+that performance would degrade gradually and smoothly as the stride increased:
+bigger jumps, slightly worse performance, nothing dramatic.
 
-That is not what happened.
+> [!Spoiler Alert]
+> That is not what happened.
+
+![Stride Scan](https://i.postimg.cc/d0PgKLZD/stride.png)
+
+> Stride scan on a 256MB dataset - runtime across stride values 1 through 
+> 4096, comparing CPU mode and Memory Engine mode. Notice the sharp jump 
+> at stride 64.
+
+---
+
+## The 64-Byte Moment
+
+Look at that graph. From stride 1 to stride 16, performance degrades slowly 
+and predictably - a few percent each step, nothing alarming. Then stride 64 
+hits and runtime jumps from 282ms to 452ms, a 60% increase in a single step. 
+Everything after that is relatively flat again. Not a gradual slope but more like a cliff.
+
+That cliff is not a bug, not a fluke, and not specific to my machine. It is 
+the cache line making itself visible.
+
+Here is what a cache line is. When your CPU asks for a value from memory, 
+the hardware does not fetch just that one value - it fetches an entire 
+64-byte chunk of memory surrounding that address and loads the whole thing 
+into cache. The reasoning is simple: if you just accessed address `X`, there 
+is a very good chance you will soon need `X+1`, `X+2`, `X+3`. This is called 
+spatial locality, and for sequential access patterns it works beautifully. 
+You pay the cost of one memory fetch and get 64 bytes of useful data in return.
+
+Now think about what happens with a stride scan. At stride 1, every element 
+you access is already sitting in cache from the previous fetch - you are 
+riding the cache line perfectly. At stride 4, you are still getting some 
+benefit, touching a few elements per cache line. At stride 16, you are getting 
+less efficient but still pulling multiple useful values per fetch.
+
+At stride 64, everything changes. Each access now lands on a completely 
+different cache line. Every single read is a cache miss. The hardware fetches 
+64 bytes, you use 8 of them, throw the rest away, and immediately pay the 
+full cost again for the next element. The cache is now effectively useless.
+
+<table style="border-collapse: collapse; width: 100%; font-size: 0.95em; line-height: 1.6; margin: 20px 0;"><thead><tr style="border-bottom: 1px solid #444;"><th align="left" style="padding: 10px 8px;">Stride</th><th align="left" style="padding: 10px 8px;">Elements used per cache line fetch</th><th align="left" style="padding: 10px 8px;">Cache misses per N elements</th></tr></thead><tbody><tr style="border-bottom: 1px solid #2a2f3a;"><td style="padding: 10px 8px;">1</td><td style="padding: 10px 8px;">8 of 8</td><td style="padding: 10px 8px;">N/8</td></tr><tr style="border-bottom: 1px solid #2a2f3a;"><td style="padding: 10px 8px;">4</td><td style="padding: 10px 8px;">2 of 8</td><td style="padding: 10px 8px;">N/8</td></tr><tr style="border-bottom: 1px solid #2a2f3a;"><td style="padding: 10px 8px;">16</td><td style="padding: 10px 8px;">1 of 8 <span style="opacity: 0.7;">(partial)</span></td><td style="padding: 10px 8px;">~N/4</td></tr><tr style="border-bottom: 1px solid #2a2f3a;"><td style="padding: 10px 8px;">64</td><td style="padding: 10px 8px;">1 of 8</td><td style="padding: 10px 8px;">N <span style="opacity: 0.7;">(every access is a miss)</span></td></tr><tr><td style="padding: 10px 8px;">4096</td><td style="padding: 10px 8px;">1 of 8</td><td style="padding: 10px 8px;">N <span style="opacity: 0.7;">(every access is a miss)</span></td></tr></tbody></table>
+
+Beyond stride 64 the situation does not get dramatically worse because you 
+are already paying the maximum possible penalty - one full cache miss per 
+element. Going to stride 256 or 4096 does not change that, which is exactly 
+why the curve flattens out after the cliff.
+
+---
+
+## What the Numbers Are Really Saying
+
+The stride scan result is interesting on its own, but it becomes more 
+interesting when you ask a slightly different question: not just "why is 
+this slow" but "what is actually the limiting factor here, and how close 
+are we to its theoretical limit?"
+
+There is a useful mental model for this called the [Roofline Model](https://en.wikipedia.org/wiki/Roofline_model). The idea 
+is straightforward - every program is either limited by how fast your CPU 
+can compute, or by how fast memory can supply data. These are two different 
+ceilings, and which one you hit depends on how much computation your program 
+does per byte of memory it reads. This ratio has a name: operational intensity, 
+measured in operations per byte.
+
+A program that reads a huge array and does almost nothing with each element - 
+like a `vector_add` (just vector addition) - has very low operational intensity. It is spending 
+most of its time waiting for memory and almost no time actually computing. 
+This is called being memory-bound, and it is exactly what the dataset scan 
+in Aletheia is. On a 256MB dataset, the scan finishes in about 92ms in CPU 
+mode. The CPU is not struggling to do the arithmetic - it is struggling to 
+get the data fast enough to have something to do arithmetic on.
+
+A program that reads less data but does a lot of work on each value - 
+matrix multiplication is the classic example - has high operational intensity. 
+It can keep the CPU fed without hammering memory constantly. This is called 
+being compute-bound, and it is a much more comfortable place to be.
+
+<div style="background: white; padding: 12px; border-radius: 8px;">
+  <img 
+    src="https://i.postimg.cc/xCyWTnVj/roofline.png" 
+    style="
+      width: 100%;
+      display: block;
+      opacity: 1;
+      filter: none;
+      mix-blend-mode: normal;
+    "
+  >
+</div>
+
+> Figure: The Roofline Model - performance is bounded either by memory 
+> bandwidth (left slope) or peak compute (flat line). Most programs sit 
+> further left than their authors expect.  
+> Source: [Wikipedia](https://en.wikipedia.org/wiki/Roofline_model)
+
+The reason this matters for the memory wall conversation is that most 
+programs people assume are compute-bound are actually memory-bound. They 
+look at CPU utilization, see it maxed out at 100%, and assume the processor 
+is the bottleneck. But a CPU can show 100% utilization while spending the 
+majority of its cycles stalled on memory - it is busy waiting, not busy 
+working. The roofline model forces you to be honest about which ceiling 
+you are actually hitting.
+
+In Aletheia's case, the stride scan at stride 64 and beyond is about as 
+purely memory-bound as a workload can get - one useful value fetched per 
+64-byte cache line, maximum cache miss rate, the CPU reduced to waiting 
+on every single access. There is no amount of CPU optimization that fixes 
+that. The only fix is changing how you access memory.
+
+---
+
+## So What?
+
+This is the part where I am supposed to give you a neat list of performance 
+tips. Use sequential access patterns. Keep your working set in cache. Avoid 
+pointer chasing. And those things are all true, but they feel a bit hollow 
+without the intuition behind them, which is what this whole blog has been 
+trying to build.
+
+The real takeaway is simpler than any tip list: before you optimize anything, 
+figure out what you are actually waiting on. If your program is memory-bound, 
+making the CPU faster does nothing - you need to change how you move data. 
+If it is compute-bound, then cache locality is not your problem and you can 
+focus elsewhere. Getting this wrong means spending time optimizing the wrong 
+thing entirely, which is a very efficient way to make no progress.
+
+The stride scan experiment made this concrete for me in a way that reading 
+about it never quite did. As Shakira once said, hips don't lie. Neither do memory benchmarks - at stride 1 you are 
+working with the hardware, at stride 64 you are working against it, and the 
+difference is 60% of your runtime showing up as a penalty you did not see 
+coming.
+
+Memory access patterns are a first class concern in performance-sensitive 
+code, not an afterthought. The hardware is fast. Getting data to the hardware 
+is the hard part. And now at least you and I know exactly where the wall is.
+
+---
+
+## Closing
+
+We started with a simple and mildly embarrassing observation: a program that 
+should be fast, running on hardware that is objectively fast, taking 400 
+milliseconds to do something that felt like it should take much less.
+
+Understanding the memory wall does not make you a better programmer overnight, 
+but it does change what questions you ask when something feels slow. Instead 
+of immediately reaching for algorithmic improvements or compiler flags, you 
+start asking where your data lives, how your code moves through it, and 
+whether the cache is helping or completely out of the picture.
+
+That shift in thinking - from "how do I compute faster" to "how do I move 
+data better" - is probably the most useful thing systems programming has 
+taught me so far. And it took a 60% performance cliff appearing out of nowhere 
+at exactly 64 bytes to really make it stick.
+
+The wall was always there. You just never had a reason to look for it.
