@@ -251,7 +251,11 @@ func (p *Parser) ParseMarkdownContent(filecontent string, path string) (Frontmat
 		p.ErrorLogger.Fatal(err)
 	}
 
-	return parsedFrontmatter, parsedMarkdown.String(), markdown, true
+	// Transform GitHub-style admonitions to semantic HTML
+	htmlContent := parsedMarkdown.String()
+	htmlContent = TransformAdmonitions(htmlContent)
+
+	return parsedFrontmatter, htmlContent, markdown, true
 }
 
 func (p *Parser) DateParse(date string) time.Time {
