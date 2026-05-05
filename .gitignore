@@ -14,4 +14,4 @@ dist/
 test/**/static/
 test/**/got_sitemap.xml
 tmp/
-site/rendered/
+site/rendered
