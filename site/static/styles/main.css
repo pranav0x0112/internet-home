@@ -2198,6 +2198,223 @@ pre {
     /* ensure button isn't clipped */
 }
 
+/* ===== Lightbox Gallery Styles ===== */
+
+.lightbox-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox-modal.active {
+    display: flex;
+    opacity: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 900px;
+    max-height: 85vh;
+    animation: lightboxFadeIn 0.3s ease;
+}
+
+@keyframes lightboxFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.lightbox-image {
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+}
+
+.lightbox-caption {
+    margin-top: 1rem;
+    text-align: center;
+    color: #e6eef8;
+    font-size: 1.05rem;
+    font-weight: 500;
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+/* Navigation buttons */
+.lightbox-prev,
+.lightbox-next,
+.lightbox-close {
+    position: absolute;
+    background: transparent;
+    border: none;
+    color: #e6eef8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 10000;
+    opacity: 0.6;
+}
+
+.lightbox-prev,
+.lightbox-next {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.lightbox-prev:focus,
+.lightbox-next:focus,
+.lightbox-close:focus {
+    outline: 2px solid #7aa2ff;
+    outline-offset: 2px;
+}
+
+/* Position prev button on the left */
+.lightbox-prev {
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Position next button on the right */
+.lightbox-next {
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Position close button in top right */
+.lightbox-close {
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.8rem;
+    line-height: 1;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.lightbox-close:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Button spans inside contain the icon */
+.lightbox-prev span,
+.lightbox-next span,
+.lightbox-close span {
+    display: block;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .lightbox-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+
+    .lightbox-prev,
+    .lightbox-next {
+        width: 38px;
+        height: 38px;
+        font-size: 1.2rem;
+    }
+
+    .lightbox-prev {
+        left: 12px;
+    }
+
+    .lightbox-next {
+        right: 12px;
+    }
+
+    .lightbox-caption {
+        margin-top: 0.8rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .lightbox-prev,
+    .lightbox-next,
+    .lightbox-close {
+        width: 36px;
+        height: 36px;
+    }
+
+    .lightbox-prev,
+    .lightbox-next {
+        font-size: 1.1rem;
+    }
+
+    .lightbox-close {
+        font-size: 1.8rem;
+        top: 12px;
+        right: 12px;
+    }
+
+    .lightbox-prev {
+        left: 10px;
+    }
+
+    .lightbox-next {
+        right: 10px;
+    }
+
+    .lightbox-image {
+        max-height: 60vh;
+    }
+}
+
+/* Gallery thumbnail hover effect */
+.gallery-thumbnail {
+    cursor: pointer;
+}
+
+.gallery-thumbnail:hover {
+    transform: scale(1.02);
+}
+
 pre code {
     overflow-x: scroll;
     font-family: JuliaMono, monospace;

@@ -8,15 +8,28 @@
         <article class="content gallery-content">
             <h1 class="collection-title">{{ $PageData.Frontmatter.Title }}</h1>
             <div class="gallery-grid">
-                {{ range .GalleryImages }}
+                {{ range $index, $filename := .GalleryImages }}
                     <figure class="gallery-item">
-                        <img src="/assets/images/gallery/{{ . }}" loading="lazy" alt="">
+                        <img src="/assets/images/gallery/{{ $filename }}" loading="lazy" alt="" data-index="{{ $index }}" data-filename="{{ $filename }}" class="gallery-thumbnail">
                     </figure>
                 {{ end }}
             </div>
         </article>
     </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-modal="true" aria-label="Image viewer">
+        <div class="lightbox-content">
+            <button class="lightbox-close" aria-label="Close lightbox"><span>&times;</span></button>
+            <button class="lightbox-prev" aria-label="Previous image"><span>&#10094;</span></button>
+            <img id="lightbox-image" class="lightbox-image" src="" alt="">
+            <button class="lightbox-next" aria-label="Next image"><span>&#10095;</span></button>
+            <div class="lightbox-caption"></div>
+        </div>
+    </div>
+
     {{ template "footer" . }}
+    <script src="/static/js/gallery.js"></script>
 </body>
 
 {{ end }}
