@@ -2415,6 +2415,34 @@ pre {
     transform: scale(1.02);
 }
 
+/* ===== Homebrew Webring ===== */
+
+.webring-links {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+
+.webring-arrow,
+.webring-text {
+    color: var(--color-text-dim);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    margin: 0 0.2rem;
+}
+
+.webring-arrow:hover,
+.webring-text:hover {
+    color: var(--color-primary);
+}
+
+.webring-arrow:focus,
+.webring-text:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
 pre code {
     overflow-x: scroll;
     font-family: JuliaMono, monospace;
