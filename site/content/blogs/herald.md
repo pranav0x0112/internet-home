@@ -1,7 +1,15 @@
 ---
 title: "When Microcontrollers Struggle with Math: Building Herald"
 date: "2026-03-29"
-tags: [hardware, VLSI, DSP, Tiny Tapeout, open-source-silicon, embedded]
+tags:
+  - hardware
+  - VLSI
+  - DSP
+  - Tiny Tapeout
+  - open-source-silicon
+  - embedded
+collections:
+  - blogs
 description: "A deep dive into building Herald, a fixed-point DSP coprocessor for Tiny Tapeout, from architecture and CORDIC design to GDS layout and silicon."
 permalink: posts/{{ title | slug }}/index.html
 author_name: M Pranav

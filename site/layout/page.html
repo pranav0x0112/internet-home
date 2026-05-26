@@ -13,10 +13,11 @@
                 <div class="post-description">
                     <h1>{{ $PageData.Frontmatter.Title }}</h1>
                                         {{ range $field := $PageData.Frontmatter.CustomFields }}
-                                            {{ if $imageValue := index $field "image" }}
-                                            <img class="blog-cover" src="{{ $imageValue }}" alt="cover image" />
-                                            {{ end }}
-                                        {{ end }}
+                                                                    {{ if $imageValue := index $field "image" }}
+                                                                    {{/* normalize old asset paths (/assets/images/...) to /images/... if present */}}
+                                                                    <img class="blog-cover" src="{{ $imageValue }}" alt="cover image" />
+                                                                    {{ end }}
+                                                                {{ end }}
                     <div class="page-date">
                         {{ if ne (len $PageData.Frontmatter.Date) 0 }}
                         Published on {{$PageData.Frontmatter.Date}}
@@ -38,7 +39,7 @@
                 </div>
                 {{ end }}
 
-                {{$PageData.Body}}{{- if or (eq .PageURL "/") (eq .PageURL "/index.html") }}
+                {{$PageData.Body}}{{- if eq .PageURL "index.html" }}
                 <section class="listening-now">
                     <h2>
                         Listening to on
@@ -52,9 +53,7 @@
 
     </main>
 
-    {{- if or (eq .PageURL "/") (eq .PageURL "/index.html") }}
     <script defer src="/static/js/lastfm.js"></script>
-    {{- end }}
 
     {{template "footer" .}}
 </body>

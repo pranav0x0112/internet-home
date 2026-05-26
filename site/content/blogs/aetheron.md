@@ -6,6 +6,8 @@ tags:
   - soc
   - riscv
   - bluespec
+collections:
+  - blogs
 customFields:
   - image: "/assets/images/aetheron.png"
 ---

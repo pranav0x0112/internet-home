@@ -6,6 +6,8 @@ tags:
   - open-source
   - gpu
   - simt
+collections:
+  - blogs
 customFields:
   - image: "/assets/images/gpu.png"
 ---

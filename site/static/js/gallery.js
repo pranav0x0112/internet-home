@@ -14,7 +14,7 @@
     // Load captions from JSON file (non-blocking)
     async function loadCaptions() {
         try {
-            const response = await fetch('/assets/data/gallery_captions.json');
+            const response = await fetch('/data/gallery_captions.json');
             if (response.ok) {
                 captionsMap = await response.json();
             }

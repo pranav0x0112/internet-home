@@ -1,7 +1,13 @@
 ---
 title: "You Don't Need Expensive Tools to Play with Silicon"
 date: "2026-02-07"
-tags: [tech, RISC-V, FOSS, hardware] 
+tags:
+  - tech
+  - RISC-V
+  - FOSS
+  - hardware
+collections:
+  - blogs
 description: "A hands-on guide to free, open-source tools that let students design, simulate, and build real processors, no million-dollar lab required."
 permalink: posts/{{ title | slug }}/index.html
 author_name: M Pranav 

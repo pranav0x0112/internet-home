@@ -1,11 +1,19 @@
 ---
 title: "Why Your CPU Is Fast But Your Program Is Slow: Understanding the Memory Wall"
 date: "2026-04-18"
-tags: [systems, performance, memory, cache, architecture, low-level]
+tags:
+  - systems
+  - performance
+  - memory
+  - cache
+  - architecture
+  - low-level
 description: "An exploration of why fast CPUs still run slow programs, uncovering the memory wall through experiments, cache behavior, and data movement."
 permalink: posts/{{ title | slug }}/index.html
 author_name: M Pranav
 author_link: "https://github.com/pranav0x0112"
+collections:
+  - blogs
 ---
 
 My laptop's CPU can do billions of operations per second. I know this because 

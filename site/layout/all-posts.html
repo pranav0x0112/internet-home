@@ -4,21 +4,60 @@
 
 <body class="site-body">
     {{ template "header" . }}
+
     <main class="container site-main collection-root" role="main">
         <article class="content">
-            <h1 class="collection-title">{{ $PageData.Frontmatter.Title }}</h1>
+
+            <h1 class="collection-title">
+                {{ $PageData.Frontmatter.Title }}
+            </h1>
+
+            {{ $CollectionSet := index .DeepDataMerge.CollectionsMap .PageURL }}
+
+            {{ if eq .PageURL "blogs/index.html" }}
+                {{ range $key, $value := .DeepDataMerge.CollectionsMap }}
+                    {{ if eq (printf "%s" $key) "collections/blogs.html" }}
+                        {{ $CollectionSet = $value }}
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+
+            {{ if eq .PageURL "projects/index.html" }}
+                {{ range $key, $value := .DeepDataMerge.CollectionsMap }}
+                    {{ if eq (printf "%s" $key) "collections/projects.html" }}
+                        {{ $CollectionSet = $value }}
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+
             <section class="posts">
-                {{ $posts := index .DeepDataMerge.CollectionsMap .PageURL }}
-                {{ range $Post := $posts }}
+                {{ range $CollectionSet }}
                     <div class="blog-item">
-                        <h3 class="blog-title"><a href="/{{ $Post.CompleteURL }}">{{ $Post.Frontmatter.Title }}</a></h3>
-                        <div class="blog-date">{{ if $Post.Frontmatter.Date }}{{ $Post.Frontmatter.Date }}{{ else }}{{ $Post.Date }}{{ end }}</div>
-                        {{ if $Post.Frontmatter.Description }}<p class="blog-desc">{{ $Post.Frontmatter.Description }}</p>{{ end }}
+                        <h3 class="blog-title">
+                            <a href="/{{ .CompleteURL }}">
+                                {{ .Frontmatter.Title }}
+                            </a>
+                        </h3>
+
+                        {{ if .Frontmatter.Date }}
+                        <div class="blog-date">
+                            {{ .Frontmatter.Date }}
+                        </div>
+                        {{ end }}
+
+                        {{ if .Frontmatter.Description }}
+                        <p class="blog-desc">
+                            {{ .Frontmatter.Description }}
+                        </p>
+                        {{ end }}
                     </div>
                 {{ end }}
             </section>
+
         </article>
     </main>
+
+    {{ template "footer" . }}
 </body>
 
 {{ end }}

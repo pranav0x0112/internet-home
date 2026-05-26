@@ -2,6 +2,8 @@
 title: "What is a System-on-Chip, Really?"
 description: "A gentle breakdown of what SoCs are and why I'm obsessed with them."
 date: "2025-07-18"
+collections:
+  - blogs
 author: "Pranav M"
 customFields:
   - image: "/assets/images/soc.png"

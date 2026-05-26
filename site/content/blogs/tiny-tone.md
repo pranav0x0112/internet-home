@@ -7,6 +7,8 @@ tags:
   - pwm
   - bluespec
   - riscv
+collections:
+  - blogs
 customFields:
   - image: "/assets/images/tiny-tone.png"
 ---

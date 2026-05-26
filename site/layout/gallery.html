@@ -4,15 +4,24 @@
 
 <body class="site-body gallery-page">
     {{ template "header" . }}
+
     <main class="container site-main gallery-shell" role="main">
         <article class="content gallery-content">
-            <h1 class="collection-title">{{ $PageData.Frontmatter.Title }}</h1>
+            <h1 class="collection-title">
+                {{ $PageData.Frontmatter.Title }}
+            </h1>
+
             <div class="gallery-grid">
                 {{ range $field := $PageData.Frontmatter.CustomFields }}
-                    {{ range $filename := $field }}
-                    <figure class="gallery-item">
-                        <img src="/assets/images/gallery/{{ $filename }}" loading="lazy" alt="" data-filename="{{ $filename }}" class="gallery-thumbnail">
-                    </figure>
+                    {{ range $k, $v := $field }}
+                        <figure class="gallery-item">
+                            <img src="/images/{{ $k }}"
+                                 loading="lazy"
+                                 alt=""
+                                 data-filename="{{ $k }}"
+                                 data-caption="{{ $v }}"
+                                 class="gallery-thumbnail">
+                        </figure>
                     {{ end }}
                 {{ end }}
             </div>
@@ -22,10 +31,20 @@
     <!-- Lightbox Modal -->
     <div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-modal="true" aria-label="Image viewer">
         <div class="lightbox-content">
-            <button class="lightbox-close" aria-label="Close lightbox"><span>&times;</span></button>
-            <button class="lightbox-prev" aria-label="Previous image"><span>&#10094;</span></button>
+            <button class="lightbox-close" aria-label="Close lightbox">
+                <span>&times;</span>
+            </button>
+
+            <button class="lightbox-prev" aria-label="Previous image">
+                <span>&#10094;</span>
+            </button>
+
             <img id="lightbox-image" class="lightbox-image" src="" alt="">
-            <button class="lightbox-next" aria-label="Next image"><span>&#10095;</span></button>
+
+            <button class="lightbox-next" aria-label="Next image">
+                <span>&#10095;</span>
+            </button>
+
             <div class="lightbox-caption"></div>
         </div>
     </div>

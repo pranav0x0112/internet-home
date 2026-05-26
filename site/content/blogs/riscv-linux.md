@@ -6,6 +6,8 @@ tags:
   - open-source
   - riscv
   - linux
+collections:
+  - blogs
 ---
 
 ## The Hidden Half of Computing
