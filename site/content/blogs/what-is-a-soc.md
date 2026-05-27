@@ -6,7 +6,7 @@ collections:
   - blogs
 author: "Pranav M"
 customFields:
-  - image: "/assets/images/soc.png"
+  - image: "/images/soc.png"
 
 ---
 

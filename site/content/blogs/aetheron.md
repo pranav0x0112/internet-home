@@ -9,7 +9,7 @@ tags:
 collections:
   - blogs
 customFields:
-  - image: "/assets/images/aetheron.png"
+  - image: "/images/aetheron.png"
 ---
 
 ## Introduction

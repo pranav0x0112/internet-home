@@ -15,7 +15,7 @@ permalink: posts/{{ title | slug }}/index.html
 author_name: M Pranav
 author_link: "https://github.com/pranav0x0112"
 customFields:
-  - image: "/assets/images/tiny-tone.png"
+  - image: "/images/tiny-tone.png"
 ---
 
 ## Why I Built Herald
@@ -60,7 +60,7 @@ The datapath is where the actual work happens. Inputs are routed to the appropri
 
 Keeping these two blocks seperate made the design easier to reason about, especially during debugging!
 
-![Block_Diagram](/assets/images/herald_block_diagram.png)
+![Block_Diagram](/images/herald_block_diagram.png)
 
 > High-level architecture of Herald showing the control FSM, compute engines, and result path.
 
@@ -81,7 +81,7 @@ Since each operand is 24 bits wide, data is transferred over multiple cycles usi
 
 From the outside, this just looks like a small protocol. Internally though, it keeps the design predictable and, more importantly, saved me from pulling my hair out by avoiding a bunch of timing headaches.
 
-![FSM](/assets/images/fsm.png)
+![FSM](/images/fsm.png)
 
 > FSM controlling command intake, operand loading, execution and result output. 
 
@@ -99,7 +99,7 @@ So instead of working with something like `3.5`, you scale it and store it as an
 
 ### CORDIC: doing trig without "real" math
 
-![CORDIC](/assets/images/cordic.gif)
+![CORDIC](/images/cordic.gif)
 
 > CORDIC can be visualized as rotating a vector toward a target angle. In hardware, this happens iteratively in small steps.
 
@@ -123,7 +123,7 @@ It is also much faster than the CORDIC path, completing in a single cycle in thi
 
 ### The Big Leagues
 
-![Full GDS](/assets/images/full_gds.png)
+![Full GDS](/images/full_gds.png)
 
 > Full Tiny Tapeout IHP26A shuttle layout showing multiple user designs sharing the same space!
 
@@ -133,7 +133,7 @@ At the shuttle level, Herald is just one small block among many designs sharing 
 
 ### Zooming into Herald
 
-![Herald_GDS](/assets/images/herald_gds.png)
+![Herald_GDS](/images/herald_gds.png)
 
 > Herald's layout showing standard cells and routing after synthesis and place-and-route. 
 
@@ -145,7 +145,7 @@ What started as HDL modules and state machines is now a dense grid of standard c
 
 ## What Went Wrong (And What I Learned)
 
-![Bugs](/assets/images/bugs.png)
+![Bugs](/images/bugs.png)
 
 > As is always the case, no hardware project is complete without a few things going wrong, and Herald definitely had its share. 
 

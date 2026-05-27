@@ -10,7 +10,7 @@ tags:
 collections:
   - blogs
 customFields:
-  - image: "/assets/images/tiny-tone.png"
+  - image: "/images/tiny-tone.png"
 ---
 
 ## Introduction

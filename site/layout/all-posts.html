@@ -1,5 +1,6 @@
 {{ define "all-posts" }}
 {{ $PageData := index .DeepDataMerge.Templates .PageURL }}
+{{ $CollectionPage := index .DeepDataMerge.Collections .PageURL }}
 {{ template "head" . }}
 
 <body class="site-body">
@@ -9,29 +10,18 @@
         <article class="content">
 
             <h1 class="collection-title">
-                {{ $PageData.Frontmatter.Title }}
+                {{ if $PageData.Frontmatter.Title }}
+                    {{ $PageData.Frontmatter.Title }}
+                {{ else if $CollectionPage.Frontmatter.Title }}
+                    {{ $CollectionPage.Frontmatter.Title }}
+                {{ end }}
             </h1>
 
             {{ $CollectionSet := index .DeepDataMerge.CollectionsMap .PageURL }}
 
-            {{ if eq .PageURL "blogs/index.html" }}
-                {{ range $key, $value := .DeepDataMerge.CollectionsMap }}
-                    {{ if eq (printf "%s" $key) "collections/blogs.html" }}
-                        {{ $CollectionSet = $value }}
-                    {{ end }}
-                {{ end }}
-            {{ end }}
-
-            {{ if eq .PageURL "projects/index.html" }}
-                {{ range $key, $value := .DeepDataMerge.CollectionsMap }}
-                    {{ if eq (printf "%s" $key) "collections/projects.html" }}
-                        {{ $CollectionSet = $value }}
-                    {{ end }}
-                {{ end }}
-            {{ end }}
-
             <section class="posts">
                 {{ range $CollectionSet }}
+
                     <div class="blog-item">
                         <h3 class="blog-title">
                             <a href="/{{ .CompleteURL }}">
@@ -51,6 +41,7 @@
                         </p>
                         {{ end }}
                     </div>
+
                 {{ end }}
             </section>
 

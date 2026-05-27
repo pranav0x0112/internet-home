@@ -9,5 +9,5 @@ tags:
 collections:
   - blogs
 customFields:
-  - image: "/assets/images/gpu.png"
+  - image: "/images/gpu.png"
 ---

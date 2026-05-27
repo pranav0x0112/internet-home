@@ -4,13 +4,39 @@
 
 <body class="site-body">
     {{template "header" .}}
-    <main class="container site-main" role="main">
+
+    <main class="container site-main collection-root" role="main">
         <article class="content">
-            <section class="tagged-posts">
+
+            <h1 class="collection-title">
+                {{ $PageData.Frontmatter.Title }}
+            </h1>
+
+            <section class="posts">
                 {{$CollectionSet := index .DeepDataMerge.CollectionsMap .PageURL}}
+
                 {{range $CollectionSet }}
-                <a href="/{{.CompleteURL}}">{{.Frontmatter.Title}}</a>
+                <div class="blog-item">
+                    <h3 class="blog-title">
+                        <a href="/{{.CompleteURL}}">
+                            {{.Frontmatter.Title}}
+                        </a>
+                    </h3>
+
+                    {{ if .Frontmatter.Date }}
+                    <div class="blog-date">
+                        {{ .Frontmatter.Date }}
+                    </div>
+                    {{ end }}
+
+                    {{ if .Frontmatter.Description }}
+                    <p class="blog-desc">
+                        {{ .Frontmatter.Description }}
+                    </p>
+                    {{ end }}
+                </div>
                 {{end}}
+
             </section>
         </article>
     </main>
