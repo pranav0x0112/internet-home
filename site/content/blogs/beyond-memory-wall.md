@@ -146,4 +146,4 @@ And because every systems rabbit hole eventually starts looking like this:
 
 ![Goose](https://i.postimg.cc/g2JTgvtf/okkk.png)
 
-_Courtesy of Abstruse Goose. I started by asking why memory felt slow and somehow ended up wondering how aggressively the CPU hides latency from me. I suspect this rabbit hole is far from over._
+_Courtesy of [Abstruse Goose](https://lastwordonnothing.com/2010/07/27/abstruse-goose-computer-programming-101/). I started by asking why memory felt slow and somehow ended up wondering how aggressively the CPU hides latency from me. I suspect this rabbit hole is far from over._
